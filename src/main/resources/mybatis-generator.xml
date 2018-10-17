@@ -58,7 +58,7 @@
         -->
 
         <!--招聘会报名表-->
-        <table tableName="test" domainObjectName="TestDomain" enableCountByExample="false"
+        <table tableName="users" domainObjectName="User" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
