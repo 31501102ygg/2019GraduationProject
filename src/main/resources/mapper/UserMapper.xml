@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.zucc.ygg.movie.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.edu.zucc.ygg.movie.domain.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="ban" jdbcType="INTEGER" property="ban" />
+  </resultMap>
+
+
+  <update id="updatePassword">
+    update users
+    set password = #{newPassword}
+    where user_name = #{username}
+  </update>
+
+  <update id="banUser">
+    update users
+    set ban = 1
+    where user_name = #{username}
+  </update>
+
+  <select id="getPassword" resultType="java.lang.String">
+      select password
+      from users
+      where user_name = #{username}
+   </select>
+
+  <select id="getRole" resultType="java.lang.String">
+      select role
+      from users
+      where user_name = #{username}
+  </select>
+
+  <select id="checkUserBanStatus" resultType="java.lang.Integer">
+    select ban
+    from users
+    where user_name = #{username}
+  </select>
+
+  <select id="getRolePermission" resultType="java.lang.String">
+        SELECT role.permission
+        FROM users, role
+        WHERE user_name = #{username} AND role.role = users.role
+  </select>
+
+  <select id="getPermission" resultType="java.lang.String">
+    select permission
+    from users
+    where user_name = #{username}
+  </select>
+
+</mapper>

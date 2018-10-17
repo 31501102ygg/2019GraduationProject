@@ -23,7 +23,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws UnauthorizedException {
-        //判断请求的请求头是否带上 "Token"
+        //判断请求的请求头是否带上 "Authorization"
         if (isLoginAttempt(request, response)) {
             //如果存在，则进入 executeLogin 方法执行登入，检查 token 是否正确
             try {

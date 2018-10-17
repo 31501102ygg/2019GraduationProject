@@ -61,7 +61,7 @@ public class CustomRealm extends AuthorizingRealm {
         if (ban == 1) {
             throw new AuthenticationException("该用户已被封号！");
         }
-        return new SimpleAuthenticationInfo(token, token, "MyRealm");
+        return new SimpleAuthenticationInfo(token, token, "CustomRealm");
     }
 
     /**

@@ -44,7 +44,7 @@ public class ShiroConfig {
         factoryBean.setUnauthorizedUrl("/unauthorized/无权限");
         Map<String, String> filterRuleMap = new HashMap<>();
         // 所有请求通过我们自己的JWT Filter
-        filterRuleMap.put("/mybatisTest", "jwt");
+        filterRuleMap.put("/**", "jwt");
         // 访问 /unauthorized/** 不通过JWTFilter
         filterRuleMap.put("/unauthorized/**", "anon");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
