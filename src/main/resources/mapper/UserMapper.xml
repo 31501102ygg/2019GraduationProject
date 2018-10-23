@@ -45,9 +45,9 @@
   </select>
 
   <select id="getRolePermission" resultType="java.lang.String">
-        SELECT role.permission
-        FROM users, role
-        WHERE user_name = #{username} AND role.role = users.role
+    select permission
+    from users
+    where user_name = #{username}
   </select>
 
   <select id="getPermission" resultType="java.lang.String">
@@ -56,4 +56,9 @@
     where user_name = #{username}
   </select>
 
+  <select id="getUser" resultMap="BaseResultMap">
+      select id,user_name,password,role,permission,ban,token
+      from users
+      where user_name = #{username}
+  </select>
 </mapper>

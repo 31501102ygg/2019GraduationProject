@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.zucc.ygg.movie.dao.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.edu.zucc.ygg.movie.domain.UserInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="phoneNumber" jdbcType="VARCHAR" property="phonenumber" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="personality_signature" jdbcType="VARCHAR" property="personalitySignature" />
+    <result column="birth_day" jdbcType="VARCHAR" property="birthDay" />
+    <result column="occupation" jdbcType="VARCHAR" property="occupation" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+  </resultMap>
+</mapper>

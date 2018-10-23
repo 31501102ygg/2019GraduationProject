@@ -52,4 +52,6 @@ public interface UserMapper extends MyMapper<User> {
      * 获得用户的权限
      */
     String getPermission(String username);
+
+    User getUser(String username);
 }

@@ -2,12 +2,17 @@ package com.edu.zucc.ygg.movie.controller;
 
 import com.edu.zucc.ygg.movie.dao.UserMapper;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
+import com.edu.zucc.ygg.movie.util.EncryptUtil;
 import com.edu.zucc.ygg.movie.util.JWTUtil;
 import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class LoginController {
@@ -15,14 +20,20 @@ public class LoginController {
     UserMapper userMapper;
 
     @PostMapping("/login")
-    public ResultDto login(@RequestParam("username") String username, @RequestParam("password") String password) {
+    @ApiOperation(value = "Login登陆接口")
+    public ResultDto login(@RequestParam("username") String username,@RequestParam("password") String password) {
         String realPassword = userMapper.getPassword(username);
+        String role = userMapper.getRole(username);
+        password = EncryptUtil.encryptMd5(password,username);
+        Map<String,String> map = new HashMap<>();
         if (realPassword == null) {
-            return ResultDtoFactory.toNack("用户名错误");
+            return ResultDtoFactory.toNack("没有这个用户名");
         } else if (!realPassword.equals(password)) {
             return ResultDtoFactory.toNack("密码错误");
         } else {
-            return ResultDtoFactory.toAck(JWTUtil.createToken(username));
+            map.put("token",JWTUtil.createToken(username));
+            map.put("role",role);
+            return ResultDtoFactory.toAck("登录成功",map);
         }
     }
 }

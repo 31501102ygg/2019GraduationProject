@@ -28,7 +28,7 @@ public class Swagger2 {
                 .title("基于Spring Boot的电影影评网站")
                 .description("对外API接口") //设置描述之类的东西
 //                .termsOfServiceUrl("https://www.jianshu.com/u/7fcaa9fcd2c1")
-                .contact(new Contact("Movie  Boot", "http://www.abc.comt", "409803540@qq.com"))
+                .contact(new Contact("31501102_叶港归", "", "409803540@qq.com"))
                 .version("1.0")
                 .build();
     }
