@@ -1,6 +1,7 @@
 package com.edu.zucc.ygg.movie.dao;
 
 import com.edu.zucc.ygg.movie.domain.User;
+import com.edu.zucc.ygg.movie.dto.UserDto;
 import com.edu.zucc.ygg.movie.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -54,4 +55,6 @@ public interface UserMapper extends MyMapper<User> {
     String getPermission(String username);
 
     User getUser(String username);
+
+    List<UserDto> getUserList(UserDto userDto);
 }

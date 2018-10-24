@@ -12,6 +12,8 @@ import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl extends BaseService<User> implements UserService {
     @Autowired
@@ -79,6 +81,10 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         if (userMapper.deleteByPrimaryKey(adminId)==1)
             return ResultDtoFactory.toAck("删除成功");
         return ResultDtoFactory.toNack("数据库删除失败");
+    }
+    @Override
+    public List<UserDto> getUserList(UserDto userDto) {
+        return userMapper.getUserList(userDto);
     }
 
     private User convertToUser(UserDto userDto){
