@@ -5,6 +5,7 @@ public class UserDto {
      * user_id
      */
     private Integer id;
+    private Integer userId;//userInfo使用
     private String username;
     private String password;
     private String phoneNumber;
@@ -29,6 +30,53 @@ public class UserDto {
      * 所在地
      */
     private String location;
+    /**
+     * 分页查询，页码和页数据条数
+     */
+    private Integer pageNum;
+    private Integer pageSize;
+    private String createDate;
+    private String nickname;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public Integer getId() {
         return id;

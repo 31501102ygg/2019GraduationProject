@@ -103,6 +103,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         userInfo.setPersonalitySignature(userDto.getPersonalitySignature());
         userInfo.setSex(userDto.getSex());
         userInfo.setBirthDay(userDto.getBirthDay());
+        userInfo.setPhonenumber(userDto.getPhoneNumber());
         return userInfo;
     }
 }

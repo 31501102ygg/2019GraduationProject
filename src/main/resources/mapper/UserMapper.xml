@@ -63,13 +63,13 @@
   </select>
 
     <select id="getUserList" resultType="com.edu.zucc.ygg.movie.dto.UserDto" parameterType="com.edu.zucc.ygg.movie.dto.UserDto">
-        select a.id as id,a.user_name as username,b.phoneNumber as phoneNumber,b.email as email,b.sex as sex,
+        select b.id as id,a.user_name as username,b.phoneNumber as phoneNumber,b.email as email,b.sex as sex,
         b.personality_signature as personalitySignature,b.birth_day as birthDay,b.occupation as occupation,
-        b.location as location
+        b.location as location,DATE_FORMAT(a.create_time,'%Y-%m-%d')as createDate,b.nickname as nickname
         from users a left join user_info b on a.id = b.user_id
         where a.role = 'user'
         <if test="username != null">
-            AND a.user_name = #{username}
+            AND a.user_name like CONCAT('%',#{username},'%')
         </if>
     </select>
 </mapper>
