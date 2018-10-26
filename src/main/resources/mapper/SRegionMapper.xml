@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.zucc.ygg.movie.dao.SRegionMapper">
+  <resultMap id="BaseResultMap" type="com.edu.zucc.ygg.movie.domain.SRegion">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="PARENT_ID" jdbcType="INTEGER" property="parentId" />
+    <result column="SHORT_NAME" jdbcType="VARCHAR" property="shortName" />
+    <result column="LEVEL_TYPE" jdbcType="INTEGER" property="levelType" />
+    <result column="CITY_CODE" jdbcType="VARCHAR" property="cityCode" />
+    <result column="ZIP_CODE" jdbcType="VARCHAR" property="zipCode" />
+    <result column="MERGER_NAME" jdbcType="VARCHAR" property="mergerName" />
+    <result column="PINYIN" jdbcType="VARCHAR" property="pinyin" />
+    <result column="LNG" jdbcType="VARCHAR" property="lng" />
+    <result column="LAT" jdbcType="VARCHAR" property="lat" />
+    <result column="OPEN_FLAG" jdbcType="VARCHAR" property="openFlag" />
+    <result column="TREE_PATH" jdbcType="VARCHAR" property="treePath" />
+    <result column="LOGIN_FLAG" jdbcType="VARCHAR" property="loginFlag" />
+    <result column="HOT_FLAG" jdbcType="VARCHAR" property="hotFlag" />
+  </resultMap>
+    <select id="list" resultType="com.edu.zucc.ygg.movie.domain.SRegion">
+       select * from s_region where PARENT_ID=#{parentID}
+    </select>
+</mapper>
