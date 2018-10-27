@@ -89,15 +89,17 @@ public class SRegion implements Serializable {
     private String hotFlag;
 
     @Transient
-    private List<SRegion> childSRegion;
+    private List<SRegion> children;
 
-    public List<SRegion> getChildSRegion() {
-        return childSRegion;
+
+    public List<SRegion> getChildren() {
+        return children;
     }
 
-    public void setChildSRegion(List<SRegion> childSRegion) {
-        this.childSRegion = childSRegion;
+    public void setChildren(List<SRegion> children) {
+        this.children = children;
     }
+
     /**
      * @return ID
      */

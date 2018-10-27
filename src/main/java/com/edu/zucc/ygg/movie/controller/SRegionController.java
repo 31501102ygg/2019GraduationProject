@@ -49,7 +49,7 @@ public class SRegionController {
             if (ls2.size() == 0) {
                 continue;
             } else {
-                sRegion.setChildSRegion(ls2);
+                sRegion.setChildren(ls2);
                 test(ls2);
             }
         }
