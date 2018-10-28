@@ -7,11 +7,13 @@ import com.edu.zucc.ygg.movie.domain.UserInfo;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.dto.UserDto;
 import com.edu.zucc.ygg.movie.service.UserService;
+import com.edu.zucc.ygg.movie.util.DateUtil;
 import com.edu.zucc.ygg.movie.util.EncryptUtil;
 import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -50,6 +52,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     public ResultDto updateUserInfo(UserDto userDto) {
         try {
             UserInfo userInfo = convertToUserInfo(userDto);
+            userInfo.setUpdateTime(DateUtil.getNowTime());
             userInfoMapper.updateByPrimaryKeySelective(userInfo);
             return ResultDtoFactory.toAck("用户信息更新完成");
         }catch(Exception e){
@@ -104,6 +107,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         userInfo.setSex(userDto.getSex());
         userInfo.setBirthDay(userDto.getBirthDay());
         userInfo.setPhonenumber(userDto.getPhoneNumber());
+        userInfo.setNickname(userDto.getNickname());
         return userInfo;
     }
 }

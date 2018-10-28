@@ -29,7 +29,27 @@ public class UserInfo {
 
     private String occupation;
 
-    private String location;
+    private Integer location;
+
+    private String nickname;
+
+    private String updateTime;
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     /**
      * @return id
@@ -150,14 +170,14 @@ public class UserInfo {
     /**
      * @return location
      */
-    public String getLocation() {
+    public Integer getLocation() {
         return location;
     }
 
     /**
      * @param location
      */
-    public void setLocation(String location) {
-        this.location = location == null ? null : location.trim();
+    public void setLocation(Integer location) {
+        this.location = location ;
     }
 }

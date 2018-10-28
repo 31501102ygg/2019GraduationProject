@@ -29,7 +29,7 @@ public class UserDto {
     /**
      * 所在地
      */
-    private String location;
+    private Integer location;
     /**
      * 分页查询，页码和页数据条数
      */
@@ -150,11 +150,11 @@ public class UserDto {
         this.occupation = occupation;
     }
 
-    public String getLocation() {
+    public Integer getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Integer location) {
         this.location = location;
     }
 }
