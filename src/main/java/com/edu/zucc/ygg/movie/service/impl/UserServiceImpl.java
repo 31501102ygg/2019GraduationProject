@@ -90,6 +90,20 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         return userMapper.getUserList(userDto);
     }
 
+    @Override
+    public List<UserDto> getAdminList(UserDto userDto) {
+        return userMapper.getAdminList(userDto);
+    }
+
+    @Override
+    public boolean banUser(String username) {
+        int updateNumber= userMapper.banUser(username);
+        if (updateNumber>0)
+            return true;
+        else
+            return false;
+    }
+
     private User convertToUser(UserDto userDto){
         User user = new User();
         user.setUserName(userDto.getUsername());

@@ -16,4 +16,8 @@ public interface UserService extends Service<User>{
     ResultDto deleteAdmin(int adminId);
 
     List<UserDto> getUserList(UserDto userDto);
+
+    List<UserDto> getAdminList(UserDto userDto);
+
+    boolean banUser(String username);
 }

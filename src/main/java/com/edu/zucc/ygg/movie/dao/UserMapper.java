@@ -37,7 +37,7 @@ public interface UserMapper extends MyMapper<User> {
     /**
      * 封号
      */
-    void banUser(String username);
+    int banUser(String username);
 
     /**
      * 检查用户状态
@@ -57,4 +57,6 @@ public interface UserMapper extends MyMapper<User> {
     User getUser(String username);
 
     List<UserDto> getUserList(UserDto userDto);
+
+    List<UserDto> getAdminList(UserDto userDto);
 }

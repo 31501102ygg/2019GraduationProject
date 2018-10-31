@@ -2,6 +2,7 @@ package com.edu.zucc.ygg.movie.controller;
 
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,8 +19,17 @@ public class ExceptionAdvice{
      */
     @ExceptionHandler({AuthorizationException.class})
     @ResponseBody
-    public ResultDto handleException(Exception e){
+    public ResultDto handleAuthorizationException(Exception e){
         return ResultDtoFactory.toNack("没有权限");
+    }
+
+    /**
+     * 全局捕获AuthorizationException异常，并进行相应处理
+     */
+    @ExceptionHandler({AuthenticationException.class})
+    @ResponseBody
+    public ResultDto handleAuthenticationException(Exception e){
+        return ResultDtoFactory.toNack(e.getLocalizedMessage());
     }
 
 
