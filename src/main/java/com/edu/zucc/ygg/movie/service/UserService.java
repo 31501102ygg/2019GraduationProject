@@ -20,4 +20,6 @@ public interface UserService extends Service<User>{
     List<UserDto> getAdminList(UserDto userDto);
 
     boolean banUser(String username);
+
+    boolean unBanUser(String username);
 }

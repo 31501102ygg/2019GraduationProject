@@ -118,4 +118,15 @@ public class UserController {
         else
             return ResultDtoFactory.toNack("封号失败");
     }
+
+    @RequestMapping(value = "/user/unban",method = RequestMethod.GET)
+    @ApiOperation(value = "用户封号")
+    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
+    @RequiresRoles("admin")
+    public ResultDto unBanuser(@RequestParam String username){
+        if (userService.unBanUser(username))
+            return ResultDtoFactory.toAck("解封成功");
+        else
+            return ResultDtoFactory.toNack("解封失败");
+    }
 }

@@ -39,6 +39,7 @@ public interface UserMapper extends MyMapper<User> {
      */
     int banUser(String username);
 
+    int unBanUser(String username);
     /**
      * 检查用户状态
      */

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.zucc.ygg.movie.dao.MovieMapper">
+  <resultMap id="BaseResultMap" type="com.edu.zucc.ygg.movie.domain.Movie">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="foreign_name" jdbcType="VARCHAR" property="foreignName" />
+    <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+    <result column="release_time" jdbcType="DATE" property="releaseTime" />
+    <result column="sheet_length" jdbcType="INTEGER" property="sheetLength" />
+    <result column="make_state" jdbcType="VARCHAR" property="makeState" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="director" jdbcType="VARCHAR" property="director" />
+    <result column="screenwriter" jdbcType="VARCHAR" property="screenwriter" />
+    <result column="actors" jdbcType="VARCHAR" property="actors" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+</mapper>

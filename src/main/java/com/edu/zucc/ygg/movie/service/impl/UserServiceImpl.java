@@ -104,6 +104,15 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
             return false;
     }
 
+    @Override
+    public boolean unBanUser(String username) {
+        int updateNumber= userMapper.unBanUser(username);
+        if (updateNumber>0)
+            return true;
+        else
+            return false;
+    }
+
     private User convertToUser(UserDto userDto){
         User user = new User();
         user.setUserName(userDto.getUsername());

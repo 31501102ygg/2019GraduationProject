@@ -10,6 +10,7 @@ public class UserDto {
     private String password;
     private String phoneNumber;
     private String email;
+    private Integer ban;
     /**
      * 性别:男 0;女 1;
      */
@@ -37,6 +38,14 @@ public class UserDto {
     private Integer pageSize;
     private String createDate;
     private String nickname;
+
+    public Integer getBan() {
+        return ban;
+    }
+
+    public void setBan(Integer ban) {
+        this.ban = ban;
+    }
 
     public Integer getUserId() {
         return userId;
