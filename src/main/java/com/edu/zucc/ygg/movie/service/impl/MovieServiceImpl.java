@@ -3,14 +3,17 @@ package com.edu.zucc.ygg.movie.service.impl;
 import com.edu.zucc.ygg.movie.dao.MovieMapper;
 import com.edu.zucc.ygg.movie.domain.Movie;
 import com.edu.zucc.ygg.movie.dto.MovieDto;
+import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.service.MovieService;
 import com.edu.zucc.ygg.movie.util.DateUtil;
+import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.List;
 
 @Service
 public class MovieServiceImpl extends BaseService<Movie> implements MovieService {
@@ -39,5 +42,21 @@ public class MovieServiceImpl extends BaseService<Movie> implements MovieService
         if (temp !=null)
             return true;
         return false;
+    }
+
+    @Override
+    public List<Movie> searchMovie(MovieDto movieDto) {
+        return movieMapper.movieSearch(movieDto);
+    }
+
+    @Override
+    public ResultDto updateMovieInfo(MovieDto movieDto) throws ParseException {
+        Movie movie = movieDto.convertToMovie();
+        if(movieMapper.updateByPrimaryKeySelective(movie) > 0){
+            return ResultDtoFactory.toAck("电影信息更新成功");
+        }
+        else{
+            return ResultDtoFactory.toNack("电影信息没有改动");
+        }
     }
 }

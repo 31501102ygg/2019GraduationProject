@@ -78,6 +78,26 @@ public class Movie {
 
     private String introduction;
 
+    private String createTimeString;
+
+    private String releaseTimeString;
+
+    public String getReleaseTimeString() {
+        return releaseTimeString;
+    }
+
+    public void setReleaseTimeString(String releaseTimeString) {
+        this.releaseTimeString = releaseTimeString;
+    }
+
+    public String getCreateTimeString() {
+        return createTimeString;
+    }
+
+    public void setCreateTimeString(String createTimeString) {
+        this.createTimeString = createTimeString;
+    }
+
     public String getIntroduction() {
         return introduction;
     }
@@ -316,6 +336,10 @@ public class Movie {
         this.updateTime = updateTime;
     }
 
+    public void transformDateToString(){
+        this.createTimeString = DateUtil.convertToDateString(this.createTime);
+        this.releaseTimeString = DateUtil.convertToDateString(this.releaseTime);
+    }
     public Movie(){}
 
     public Movie(MovieDto movieDto) {

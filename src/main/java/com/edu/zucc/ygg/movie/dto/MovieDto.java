@@ -1,6 +1,12 @@
 package com.edu.zucc.ygg.movie.dto;
 
+import com.edu.zucc.ygg.movie.domain.Movie;
+import com.edu.zucc.ygg.movie.util.DateUtil;
 import org.springframework.web.multipart.MultipartFile;
+import sun.swing.StringUIClientPropertyKey;
+import tk.mybatis.mapper.util.StringUtil;
+
+import java.text.ParseException;
 
 public class MovieDto {
 
@@ -17,6 +23,25 @@ public class MovieDto {
     private String actors;
     private String introduction;
     private String language;
+
+    private Integer pageSize;
+    private Integer pageNum;
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
 
     public String getDirectors() {
         return directors;
@@ -121,4 +146,24 @@ public class MovieDto {
     public void setActors(String actors) {
         this.actors = actors;
     }
+
+    public Movie convertToMovie() throws ParseException {
+        Movie movie = new Movie();
+        movie.setId(this.id);
+        movie.setActors(this.actors);
+        movie.setDirector(this.directors);
+        movie.setForeignName(this.foreignName);
+        movie.setImgUrl(this.imgUrl);
+        movie.setScreenwriter(this.screenwriter);
+        movie.setLanguage(this.language);
+        movie.setIntroduction(this.introduction);
+        movie.setSheetLength(this.sheetLength);
+        movie.setType(this.type);
+        movie.setMakeState(this.makeState);
+        movie.setName(this.name);
+        if (!StringUtil.isEmpty(this.releaseTime))
+            movie.setReleaseTime(DateUtil.convertToDate(this.releaseTime));
+        return movie;
+    }
+
 }

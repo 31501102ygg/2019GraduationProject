@@ -16,7 +16,26 @@
     <result column="director" jdbcType="VARCHAR" property="director" />
     <result column="screenwriter" jdbcType="VARCHAR" property="screenwriter" />
     <result column="actors" jdbcType="VARCHAR" property="actors" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
+  <select id="movieSearch" resultMap="BaseResultMap" parameterType="com.edu.zucc.ygg.movie.dto.MovieDto">
+    select * from movie
+    where 1=1
+    <if test="name != null and name != '' " >
+      and name like CONCAT('%',#{name},'%') or foreign_name like CONCAT('%',#{name},'%')
+    </if>
+    <if test="makeState != null and makeState != ''" >
+      and make_state like CONCAT('%',#{makeState},'%')
+    </if>
+    <if test="type != null and type != ''" >
+      and type like CONCAT('%',#{type},'%')
+    </if>
+    <if test="language != null and language != ''" >
+      and language like CONCAT('%',#{language},'%')
+    </if>
+    order by create_time Desc
+  </select>
 </mapper>
