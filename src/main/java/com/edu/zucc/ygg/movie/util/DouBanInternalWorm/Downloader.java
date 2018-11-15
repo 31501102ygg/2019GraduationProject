@@ -1,5 +1,6 @@
 package com.edu.zucc.ygg.movie.util.DouBanInternalWorm;
 
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -21,8 +22,8 @@ public class Downloader {
         // 使用Cookie消息头是为了简化登录问题(豆瓣电影评论不登录条件下获取不到全部数据)
         Request request = new Request.Builder()
                 .url(url)
-                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                .addHeader("Cookie", "gr_user_id=b6c0778d-f8df-4963-b057-bd321593de1e; bid=T-M5aFmoLY0; __yadk_uid=WvMJfSHd1cjUFrFQTdN9KnkIOkR2AFZu; viewed=\"26311273_26877306_26340992_26649178_3199438_3015786_27038473_10793398_26754665\"; ll=\"108296\"; ps=y; dbcl2=\"141556470:E4oz3is9RMY\"; ap=1; _vwo_uuid_v2=E57494AA9988242B62FB576F22211CE4|e95afc3b3a6c74f0b9d9106c6546e73e; ck=OvCX; __utma=30149280.1283677058.1481968276.1531194536.1531389580.35; __utmc=30149280; __utmz=30149280.1524482884.31.29.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; __utmv=30149280.14155; __utma=223695111.1691619874.1522208966.1531194536.1531389615.5; __utmc=223695111; __utmz=223695111.1524483025.2.2.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; _pk_ref.100001.4cf6=%5B%22%22%2C%22%22%2C1531389615%2C%22https%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3D0saOVVzXJiEvkbYGxCXZ849EweAjA2om6cIvPZ7FxE35FrmKU8CfOHm1cC9Xs0JS%26wd%3D%26eqid%3De5307bbf0006c241000000045addc33f%22%5D; _pk_id.100001.4cf6=cee42334e421195b.1522208966.5.1531389615.1531200476.; push_noty_num=0; push_doumail_num=0")
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36")
+                .addHeader("Cookie", "bid=gUzfoT3pFVI; ll=\"118172\"; __yadk_uid=fQIe7MhrdRh9CJFDb5M6ebEUL06Q6lvI; _vwo_uuid_v2=D100B43F9018074B470633FD2C28D74F4|69bbead2672894630dc44dc66a46c26f; ps=y; push_noty_num=0; push_doumail_num=0; douban-profile-remind=1; __utmv=30149280.17956; gr_user_id=f5409d09-4317-43ad-bc38-44ef82cce793; __utmc=30149280; __utmc=223695111; ap_v=0,6.0; dbcl2=\"179567148:jApgP53Mbtk\"; ck=Z9Uy; _pk_ref.100001.4cf6=%5B%22%22%2C%22%22%2C1542181343%2C%22https%3A%2F%2Fwww.douban.com%2Faccounts%2Flogin%3Fredir%3Dhttps%253A%252F%252Fmovie.douban.com%252F%22%5D; _pk_ses.100001.4cf6=*; __utma=30149280.1905281004.1539835562.1542176559.1542181343.23; __utmb=30149280.0.10.1542181343; __utmz=30149280.1542181343.23.12.utmcsr=douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/accounts/login; __utma=223695111.1421376414.1539835564.1542176559.1542181343.24; __utmb=223695111.0.10.1542181343; __utmz=223695111.1542181343.24.13.utmcsr=douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/accounts/login; _pk_id.100001.4cf6=4faa41e1fae00ed1.1539835564.22.1542181874.1542178846.")
                 .get()
                 .build();
         try {

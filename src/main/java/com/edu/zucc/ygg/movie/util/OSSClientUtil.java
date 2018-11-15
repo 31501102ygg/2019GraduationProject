@@ -63,13 +63,15 @@ public class OSSClientUtil {
      * @param url
      * @throws ImgException
      */
-    public void uploadImg2Oss(String url) throws ImgException {
+    public String uploadImg2Oss(String url) throws ImgException {
         File fileOnServer = new File(url);
         FileInputStream fin;
         try {
             fin = new FileInputStream(fileOnServer);
             String[] split = url.split("/");
-            this.uploadFile2OSS(fin, split[split.length - 1]);
+            String name = split[split.length - 1];
+            this.uploadFile2OSS(fin, name);
+            return name;
         } catch (FileNotFoundException e) {
             throw new ImgException("图片上传失败");
         }

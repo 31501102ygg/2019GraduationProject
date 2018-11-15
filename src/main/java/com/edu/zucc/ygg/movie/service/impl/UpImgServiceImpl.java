@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tk.mybatis.mapper.util.StringUtil;
 
 @Service
 public class UpImgServiceImpl implements UpImgService {
@@ -18,6 +19,18 @@ public class UpImgServiceImpl implements UpImgService {
         }
         OSSClientUtil ossClient=new OSSClientUtil();
         String name = ossClient.uploadImg2Oss(file);
+        String imgUrl = ossClient.getImgUrl(name);
+        String[] split = imgUrl.split("\\?");
+        return split[0];
+    }
+
+    @Override
+    public String updateHead(String fileUrl) throws ImgException {
+        if (StringUtil.isEmpty(fileUrl)) {
+            throw new ImgException("file不能为空");
+        }
+        OSSClientUtil ossClient=new OSSClientUtil();
+        String name = ossClient.uploadImg2Oss(fileUrl);
         String imgUrl = ossClient.getImgUrl(name);
         String[] split = imgUrl.split("\\?");
         return split[0];

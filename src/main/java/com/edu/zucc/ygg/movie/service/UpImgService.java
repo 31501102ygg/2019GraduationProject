@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UpImgService {
 
     String updateHead(MultipartFile file)throws ImgException;
+
+    String updateHead(String fileUrl) throws ImgException;
 }
 
 

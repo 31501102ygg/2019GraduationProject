@@ -1,6 +1,7 @@
 package com.edu.zucc.ygg.movie.util.DouBanInternalWorm;
 
 import com.edu.zucc.ygg.movie.domain.Movie;
+import com.edu.zucc.ygg.movie.util.Test;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -16,9 +17,9 @@ public class WormUtil {
     private List<String> filmUrlList = new ArrayList<>();
 
     public WormUtil(UrlManager manager,
-                   Downloader downloader,
-                   PageParser parser,
-                   DataProcessor processor) {
+                    Downloader downloader,
+                    PageParser parser,
+                    DataProcessor processor) {
         this.manager = manager;
         this.downloader = downloader;
         this.parser = parser;
@@ -29,7 +30,7 @@ public class WormUtil {
 
         // 豆瓣影评URL部分不变，变化的只有参数部分
         final String BASE_URL = "https://movie.douban.com/j/new_search_subjects";
-        final String ROOT_URL = BASE_URL + "?sort=U&range=0,10&tags=&start=20";
+        final String ROOT_URL = BASE_URL + "?sort=U&range=0,10&tags=电影&start=220";
 
         // 构建爬虫并启动爬虫，这里仅作最小化演示，程序健壮性、扩展性等暂不考虑
         WormUtil crawler = new WormUtil(new UrlManager(BASE_URL, ROOT_URL),
@@ -48,22 +49,22 @@ public class WormUtil {
      */
     private long getFilmUrls() {
         final AtomicLong counter = new AtomicLong();
-            try {
-                String url = manager.getNewUrl();
-                counter.incrementAndGet();
-                String html = downloader.download(url);
-                JSONObject jsonObject = JSONObject.fromObject(html);
-                JSONArray jsonArray = (JSONArray) jsonObject.get("data");
-                for(Object object:jsonArray){
-                    JSONObject jsonObject1 = (JSONObject) object;
-                    String urlFilm = (String)jsonObject1.get("url");
-                    System.out.println(urlFilm);
-                    filmUrlList.add(urlFilm);
-                }
-                manager.appendNewUrls(filmUrlList);
-            } catch (Exception e) {
-                System.out.println(e);
+        try {
+            String url = manager.getNewUrl();
+            counter.incrementAndGet();
+            String html = downloader.download(url);
+            JSONObject jsonObject = JSONObject.fromObject(html);
+            JSONArray jsonArray = (JSONArray) jsonObject.get("data");
+            for(Object object:jsonArray){
+                JSONObject jsonObject1 = (JSONObject) object;
+                String urlFilm = (String)jsonObject1.get("url");
+                System.out.println(urlFilm);
+                filmUrlList.add(urlFilm);
             }
+            manager.appendNewUrls(filmUrlList);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return counter.get();
     }
 
@@ -76,7 +77,10 @@ public class WormUtil {
                 String url = manager.getNewUrl();
                 String html = downloader.download(url);
                 Movie movie = parser.parse(html);
-                System.out.println(movie.getName()+"    "+movie.getImgUrl());
+                System.out.println(""+movie.getName()+","+movie.getForeignName()+","
+                        +movie.getImgUrl()+","+movie.getDirector()+","+movie.getScreenwriter()+","+movie.getActors()+","+movie.getType()+","
+                        +movie.getMakeState()+","+movie.getLanguage()+","+movie.getReleaseTime()+","+movie.getSheetLength()+","+movie.getIntroduction());
+                Test.uploadMovieImg(movie);
             }catch(Exception e){
                 System.out.println(e);
             }
