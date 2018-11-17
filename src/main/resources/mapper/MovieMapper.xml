@@ -21,6 +21,11 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
+  <select id="newestMovieList" resultMap="BaseResultMap">
+    select * from movie
+    order by create_time desc
+  </select>
+
   <select id="movieSearch" resultMap="BaseResultMap" parameterType="com.edu.zucc.ygg.movie.dto.MovieDto">
     select * from movie
     where 1=1

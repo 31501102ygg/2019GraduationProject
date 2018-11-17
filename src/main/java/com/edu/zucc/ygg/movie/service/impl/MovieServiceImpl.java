@@ -59,4 +59,10 @@ public class MovieServiceImpl extends BaseService<Movie> implements MovieService
             return ResultDtoFactory.toNack("电影信息没有改动");
         }
     }
+
+    @Override
+    public List<Movie> searchNewestMovie() {
+        List<Movie> movies = movieMapper.newestMovieList();
+        return movies;
+    }
 }

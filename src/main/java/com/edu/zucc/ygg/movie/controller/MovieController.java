@@ -93,4 +93,22 @@ public class MovieController {
             return ResultDtoFactory.toNack("数据库出错");
         }
     }
+
+
+    @RequestMapping(value = "/newest",method = RequestMethod.POST)
+    @ApiOperation(value = "最新电影获取")
+    public ResultDto getNewestMovie(@RequestBody MovieDto movieDto){
+        int pageNum = movieDto.getPageNum()==null?1:movieDto.getPageNum();
+        int pageSize = movieDto.getPageSize()==null?10:movieDto.getPageSize();
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<Movie> pageInfo = new PageInfo<Movie>(movieService.searchNewestMovie());
+        List<Movie> movies = pageInfo.getList();
+        movies.forEach(movie -> {
+            movie.transformDateToString();
+        });
+        Map<String,Object> map = new HashMap<>();
+        map.put("pageNumber",pageInfo.getTotal());
+        map.put("list",movies);
+        return ResultDtoFactory.toAck("查询成功",map);
+    }
 }
