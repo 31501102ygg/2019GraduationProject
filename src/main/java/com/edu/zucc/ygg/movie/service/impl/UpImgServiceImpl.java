@@ -25,6 +25,18 @@ public class UpImgServiceImpl implements UpImgService {
     }
 
     @Override
+    public String updateUserHeaderImg(MultipartFile file) throws ImgException{
+        if (file == null || file.getSize() <= 0) {
+            throw new ImgException("file不能为空");
+        }
+        OSSClientUtil ossClient=new OSSClientUtil();
+        String name = ossClient.uploadImgHeader(file);
+        String imgUrl = ossClient.getHearImgUrl(name,"movie_headerImg/");
+        String[] split = imgUrl.split("\\?");
+        return split[0];
+    }
+
+    @Override
     public String updateHead(String fileUrl) throws ImgException {
         if (StringUtil.isEmpty(fileUrl)) {
             throw new ImgException("file不能为空");

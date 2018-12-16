@@ -11,6 +11,9 @@
     <result column="role" jdbcType="VARCHAR" property="role" />
     <result column="permission" jdbcType="VARCHAR" property="permission" />
     <result column="ban" jdbcType="INTEGER" property="ban" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
 
@@ -31,6 +34,12 @@
     set ban = 0
     where user_name = #{username}
   </update>
+
+    <update id="updateUserHeaderImg">
+        update user_info
+        set header_url = #{imgUrl}
+        where user_id = (select id from users where user_name = #{username})
+    </update>
 
   <select id="getPassword" resultType="java.lang.String">
       select password
@@ -68,10 +77,10 @@
       where user_name = #{username}
   </select>
 
-    <select id="getUserList" resultType="com.edu.zucc.ygg.movie.dto.UserDto" parameterType="com.edu.zucc.ygg.movie.dto.UserDto">
+    <select id="getUserList" parameterType="com.edu.zucc.ygg.movie.dto.UserDto" resultType="com.edu.zucc.ygg.movie.dto.UserDto">
         select b.id as id,a.user_name as username,b.phoneNumber as phoneNumber,b.email as email,b.sex as sex,
         b.personality_signature as personalitySignature,b.birth_day as birthDay,b.occupation as occupation,
-        b.location as location,DATE_FORMAT(a.create_time,'%Y-%m-%d')as createDate,b.nickname as nickname,a.ban as ban
+        b.location as location,DATE_FORMAT(a.create_time,'%Y-%m-%d')as createDate,b.nickname as nickname,a.ban as ban,b.header_url as headerImgUrl
         from users a left join user_info b on a.id = b.user_id
         where a.role = 'user'
         <if test="username != null">
@@ -79,7 +88,7 @@
         </if>
     </select>
 
-    <select id="getAdminList" resultType="com.edu.zucc.ygg.movie.dto.UserDto" parameterType="com.edu.zucc.ygg.movie.dto.UserDto">
+    <select id="getAdminList" parameterType="com.edu.zucc.ygg.movie.dto.UserDto" resultType="com.edu.zucc.ygg.movie.dto.UserDto">
         select b.id as id,a.user_name as username,b.phoneNumber as phoneNumber,b.email as email,b.sex as sex,
         b.personality_signature as personalitySignature,b.birth_day as birthDay,b.occupation as occupation,
         b.location as location,DATE_FORMAT(a.create_time,'%Y-%m-%d')as createDate,b.nickname as nickname,a.ban as ban
@@ -88,5 +97,14 @@
         <if test="username != null">
             AND a.user_name like CONCAT('%',#{username},'%')
         </if>
+    </select>
+
+    <select id="getUserInfo" resultType="com.edu.zucc.ygg.movie.dto.UserDto">
+        select b.id as id,a.user_name as username,b.phoneNumber as phoneNumber,b.email as email,b.sex as sex,
+        b.personality_signature as personalitySignature,b.birth_day as birthDay,b.occupation as occupation,
+        b.location as location,DATE_FORMAT(a.create_time,'%Y-%m-%d')as createDate,b.nickname as nickname,a.ban as ban,
+        b.header_url as headerImgUrl
+        from users a left join user_info b on a.id = b.user_id
+        where a.user_name = #{username}
     </select>
 </mapper>

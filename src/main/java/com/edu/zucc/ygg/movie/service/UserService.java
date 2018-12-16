@@ -22,4 +22,11 @@ public interface UserService extends Service<User>{
     boolean banUser(String username);
 
     boolean unBanUser(String username);
+
+    UserDto getUserByUserName(String username);
+
+    User getUser(String username);
+
+    void updateUserHeaderImg(String username,String headerImg);
+
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
 public interface UserMapper extends MyMapper<User> {
     /**
@@ -60,4 +59,8 @@ public interface UserMapper extends MyMapper<User> {
     List<UserDto> getUserList(UserDto userDto);
 
     List<UserDto> getAdminList(UserDto userDto);
+
+    void updateUserHeaderImg(@Param("username")String username,@Param("imgUrl")String imgUrl);
+
+    UserDto getUserInfo(@Param("username") String username);
 }

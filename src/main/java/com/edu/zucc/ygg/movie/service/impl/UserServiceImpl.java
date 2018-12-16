@@ -113,6 +113,21 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
             return false;
     }
 
+    @Override
+    public UserDto getUserByUserName(String username) {
+        return userMapper.getUserInfo(username);
+    }
+
+    @Override
+    public User getUser(String username) {
+        return userMapper.getUser(username);
+    }
+
+    @Override
+    public void updateUserHeaderImg(String username, String headerImg) {
+        userMapper.updateUserHeaderImg(username,headerImg);
+    }
+
     private User convertToUser(UserDto userDto){
         User user = new User();
         user.setUserName(userDto.getUsername());

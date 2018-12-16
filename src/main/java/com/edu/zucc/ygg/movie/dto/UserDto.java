@@ -38,6 +38,15 @@ public class UserDto {
     private Integer pageSize;
     private String createDate;
     private String nickname;
+    private String headerImgUrl;
+
+    public String getHeaderImgUrl() {
+        return headerImgUrl;
+    }
+
+    public void setHeaderImgUrl(String headerImgUrl) {
+        this.headerImgUrl = headerImgUrl;
+    }
 
     public Integer getBan() {
         return ban;

@@ -94,6 +94,23 @@ public class OSSClientUtil {
         }
     }
 
+    public String uploadImgHeader(MultipartFile file) throws ImgException {
+        if (file.getSize() > 10 * 1024 * 1024) {
+            throw new ImgException("上传图片大小不能超过10M！");
+        }
+        String originalFilename = file.getOriginalFilename();
+        String substring = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+        Random random = new Random();
+        String name = random.nextInt(10000) + System.currentTimeMillis() + substring;
+        try {
+            InputStream inputStream = file.getInputStream();
+            this.uploadFile2OSS(inputStream, name,"movie_headerImg/");
+            return name;
+        } catch (Exception e) {
+            throw new ImgException("图片上传失败");
+        }
+    }
+
     /**
      * 获得图片路径
      *
@@ -109,6 +126,15 @@ public class OSSClientUtil {
         return null;
     }
 
+    public String getHearImgUrl(String fileUrl,String filedir) {
+        System.out.println(fileUrl);
+        if (!StringUtils.isEmpty(fileUrl)) {
+            String[] split = fileUrl.split("/");
+            return this.getUrl(filedir + split[split.length - 1]);
+        }
+        return null;
+    }
+
     /**
      * 上传到OSS服务器 如果同名文件会覆盖服务器上的
      *
@@ -119,6 +145,33 @@ public class OSSClientUtil {
      * @return 出错返回"" ,唯一MD5数字签名
      */
     public String uploadFile2OSS(InputStream instream, String fileName) {
+        String ret = "";
+        try {
+            // 创建上传Object的Metadata
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentLength(instream.available());
+            objectMetadata.setCacheControl("no-cache");
+            objectMetadata.setHeader("Pragma", "no-cache");
+            objectMetadata.setContentType(getcontentType(fileName.substring(fileName.lastIndexOf("."))));
+            objectMetadata.setContentDisposition("inline;filename=" + fileName);
+            // 上传文件
+            PutObjectResult putResult = ossClient.putObject(bucketName, filedir + fileName, instream, objectMetadata);
+            ret = putResult.getETag();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                if (instream != null) {
+                    instream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
+    }
+
+    public String uploadFile2OSS(InputStream instream, String fileName,String filedir) {
         String ret = "";
         try {
             // 创建上传Object的Metadata

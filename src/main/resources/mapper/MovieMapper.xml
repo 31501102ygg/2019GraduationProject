@@ -43,4 +43,9 @@
     </if>
     order by create_time Desc
   </select>
+
+  <select id="getMovieInfo" resultMap="BaseResultMap">
+    select * from movie
+    where id = #{id}
+  </select>
 </mapper>

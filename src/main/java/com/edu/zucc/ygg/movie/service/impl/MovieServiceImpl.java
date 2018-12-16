@@ -65,4 +65,9 @@ public class MovieServiceImpl extends BaseService<Movie> implements MovieService
         List<Movie> movies = movieMapper.newestMovieList();
         return movies;
     }
+
+    @Override
+    public Movie getMovieInfo(Integer movieId) {
+        return null;
+    }
 }

@@ -1,5 +1,6 @@
 package com.edu.zucc.ygg.movie.domain;
 
+import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "users")
@@ -18,6 +19,14 @@ public class User {
     private String permission;
 
     private Integer ban;
+
+    private String token;
+
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
 
     /**
      * @return id
@@ -101,5 +110,47 @@ public class User {
      */
     public void setBan(Integer ban) {
         this.ban = ban;
+    }
+
+    /**
+     * @return token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * @param token
+     */
+    public void setToken(String token) {
+        this.token = token == null ? null : token.trim();
+    }
+
+    /**
+     * @return create_time
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * @param createTime
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    /**
+     * @return update_time
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    /**
+     * @param updateTime
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

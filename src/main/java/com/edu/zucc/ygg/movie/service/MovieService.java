@@ -17,4 +17,6 @@ public interface MovieService {
     ResultDto updateMovieInfo(MovieDto movieDto) throws ParseException;
 
     List<Movie> searchNewestMovie();
+
+    Movie getMovieInfo(Integer movieId);
 }

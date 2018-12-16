@@ -1,9 +1,11 @@
 package com.edu.zucc.ygg.movie.controller;
 
 import com.edu.zucc.ygg.movie.constant.ApplicationConstant;
+import com.edu.zucc.ygg.movie.domain.User;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.dto.UserDto;
 import com.edu.zucc.ygg.movie.service.UserService;
+import com.edu.zucc.ygg.movie.util.JWTUtil;
 import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.util.StringUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,5 +131,19 @@ public class UserController {
             return ResultDtoFactory.toAck("解封成功");
         else
             return ResultDtoFactory.toNack("解封失败");
+    }
+
+    @RequestMapping(value = "/user/info",method = RequestMethod.GET)
+    @ApiOperation(value = "用户信息查询")
+    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
+    @RequiresRoles(value={"admin","user"},logical = Logical.OR)
+    public ResultDto getUserInfoById(HttpServletRequest request, @RequestParam String username){
+        String token = request.getHeader("Authorization");
+        String tokenUserName = JWTUtil.getUsername(token);
+        User requestUser = userService.getUser(tokenUserName);
+        UserDto user = userService.getUserByUserName(username);
+        if (requestUser.getRole().equals("user")&&!tokenUserName.equals(username))
+            return ResultDtoFactory.toNack("你不能访问别人的账号信息");
+        return ResultDtoFactory.toAck("用户信息查询成功",user);
     }
 }

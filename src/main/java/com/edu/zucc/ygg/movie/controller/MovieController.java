@@ -111,4 +111,13 @@ public class MovieController {
         map.put("list",movies);
         return ResultDtoFactory.toAck("查询成功",map);
     }
+
+
+    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    @ApiOperation(value = "获取某部电影详细信息")
+    public ResultDto getMovieInfo(@RequestParam Integer movieId){
+        Movie movie = movieService.getMovieInfo(movieId);
+        movie.transformDateToString();
+        return ResultDtoFactory.toAck("电影信息查询成功",movie);
+    }
 }
