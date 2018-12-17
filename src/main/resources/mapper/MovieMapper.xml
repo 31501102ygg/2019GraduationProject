@@ -48,4 +48,5 @@
     select * from movie
     where id = #{id}
   </select>
+
 </mapper>

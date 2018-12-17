@@ -146,4 +146,15 @@ public class UserController {
             return ResultDtoFactory.toNack("你不能访问别人的账号信息");
         return ResultDtoFactory.toAck("用户信息查询成功",user);
     }
+
+    @RequestMapping(value = "/user",method = RequestMethod.GET)
+    @ApiOperation(value = "用户通过TOKEN获取用户信息")
+    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
+    @RequiresRoles("user")
+    public ResultDto getUserInfoByToken(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        String tokenUserName = JWTUtil.getUsername(token);
+        UserDto user = userService.getUserByUserName(tokenUserName);
+        return ResultDtoFactory.toAck("用户信息查询成功",user);
+    }
 }

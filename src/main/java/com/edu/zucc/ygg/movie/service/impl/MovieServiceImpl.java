@@ -68,6 +68,6 @@ public class MovieServiceImpl extends BaseService<Movie> implements MovieService
 
     @Override
     public Movie getMovieInfo(Integer movieId) {
-        return null;
+        return movieMapper.getMovieInfo(movieId);
     }
 }
