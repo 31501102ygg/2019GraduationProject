@@ -9,7 +9,24 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="state" jdbcType="INTEGER" property="state" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
+
+  <select id="getSlideList" resultMap="BaseResultMap">
+      select *
+      from slide
+      where state = 1;
+    </select>
+
+    <select id="searchSlideList" resultMap="BaseResultMap">
+        select *
+        from slide
+        where state = 0 and
+        <if test="title != null">
+            title like CONCAT('%',#{title},'%')
+        </if>
+        order by create_date desc
+    </select>
 </mapper>

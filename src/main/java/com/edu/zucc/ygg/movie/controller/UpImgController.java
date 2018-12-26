@@ -74,6 +74,20 @@ public class UpImgController {
         }
     }
 
+    @RequestMapping(value = "/upload/img/slide", method = RequestMethod.POST)
+    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
+    @RequiresRoles("admin")
+    public ResultDto slideImgUpload(HttpServletRequest request, MultipartFile file) {
+        try {
+            String url = upImgService.updateSlideImg(file);
+            logger.debug("图片路径{}",url);
+            return ResultDtoFactory.toAck("轮播幻灯片图片上传成功",url);
+        } catch (Exception e) {
+            logger.error("图片上传失败",e);
+            return ResultDtoFactory.toNack("图片上传失败："+e.getMessage());
+        }
+    }
+
     @RequestMapping(value = "/accessImgUrl", method = RequestMethod.POST)
     @ResponseBody
     public ResultDto accessImg(@RequestParam String imgAddress) {

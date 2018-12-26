@@ -17,6 +17,8 @@ public class SlideDto implements Serializable {
 
     private String img;
 
+    private Integer state;
+
     private Date createDate;
 
     private Date updateDate;
@@ -24,6 +26,26 @@ public class SlideDto implements Serializable {
     private String createTimeString;
 
     private String updateTimeString;
+
+    private Integer pageSize;
+
+    private Integer pageNum;
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
 
     public Integer getId() {
         return id;
@@ -55,6 +77,14 @@ public class SlideDto implements Serializable {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public Date getCreateDate() {
@@ -90,8 +120,10 @@ public class SlideDto implements Serializable {
     }
 
     public void transformDateToString(){
-        this.createTimeString = DateUtil.convertToDateString(this.createDate);
-        this.updateTimeString = DateUtil.convertToDateString(this.updateDate);
+        if (this.createDate!=null)
+            this.createTimeString = DateUtil.convertToDateString(this.createDate);
+        if (this.updateDate!=null)
+            this.updateTimeString = DateUtil.convertToDateString(this.updateDate);
     }
 
     public Slide toSlide(){
@@ -99,7 +131,18 @@ public class SlideDto implements Serializable {
         slide.setId(this.id);
         slide.setTitle(this.title);
         slide.setContent(this.content);
+        slide.setState(this.state);
         slide.setImg(this.img);
         return slide;
+    }
+    public SlideDto(){}
+    public SlideDto(Slide slide){
+        this.id = slide.getId();
+        this.title = slide.getTitle();
+        this.content = slide.getContent();
+        this.img = slide.getImg();
+        this.state = slide.getState();
+        this.createDate = slide.getCreateDate();
+        this.updateDate = slide.getUpdateDate();
     }
 }

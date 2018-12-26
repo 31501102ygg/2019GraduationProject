@@ -15,6 +15,8 @@ public class Slide {
 
     private String img;
 
+    private Integer state;
+
     @Column(name = "create_date")
     private Date createDate;
 
@@ -75,6 +77,14 @@ public class Slide {
      */
     public void setImg(String img) {
         this.img = img == null ? null : img.trim();
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     /**

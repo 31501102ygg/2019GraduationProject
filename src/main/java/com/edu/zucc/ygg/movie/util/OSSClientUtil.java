@@ -111,6 +111,22 @@ public class OSSClientUtil {
         }
     }
 
+    public String uploadImg(MultipartFile file,String filedir) throws ImgException {
+        if (file.getSize() > 10 * 1024 * 1024) {
+            throw new ImgException("上传图片大小不能超过10M！");
+        }
+        String originalFilename = file.getOriginalFilename();
+        String substring = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+        Random random = new Random();
+        String name = random.nextInt(10000) + System.currentTimeMillis() + substring;
+        try {
+            InputStream inputStream = file.getInputStream();
+            this.uploadFile2OSS(inputStream, name,filedir);
+            return name;
+        } catch (Exception e) {
+            throw new ImgException("图片上传失败");
+        }
+    }
     /**
      * 获得图片路径
      *

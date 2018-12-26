@@ -47,4 +47,16 @@ public class UpImgServiceImpl implements UpImgService {
         String[] split = imgUrl.split("\\?");
         return split[0];
     }
+
+    @Override
+    public String updateSlideImg(MultipartFile file) throws ImgException {
+        if (file == null || file.getSize() <= 0) {
+            throw new ImgException("file不能为空");
+        }
+        OSSClientUtil ossClient=new OSSClientUtil();
+        String name = ossClient.uploadImg(file,"movie_slide/");
+        String imgUrl = ossClient.getHearImgUrl(name,"movie_slide/");
+        String[] split = imgUrl.split("\\?");
+        return split[0];
+    }
 }

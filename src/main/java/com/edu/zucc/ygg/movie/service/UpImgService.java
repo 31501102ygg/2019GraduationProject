@@ -11,6 +11,8 @@ public interface UpImgService {
     String updateHead(String fileUrl) throws ImgException;
 
     String updateUserHeaderImg(MultipartFile file) throws ImgException;
+
+    String updateSlideImg(MultipartFile file) throws ImgException;
 }
 
 
