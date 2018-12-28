@@ -63,4 +63,8 @@ public interface UserMapper extends MyMapper<User> {
     void updateUserHeaderImg(@Param("username")String username,@Param("imgUrl")String imgUrl);
 
     UserDto getUserInfo(@Param("username") String username);
+
+    UserDto getUserInfoById(@Param("userId") Integer userId);
+
+    Integer getUserId(@Param("username")String username);
 }

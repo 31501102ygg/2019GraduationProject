@@ -14,4 +14,6 @@ public interface SlideService {
     List<Slide> getSlideList();
 
     List<Slide> searchSlideList(String title);
+
+    void exchangeShowSlide(Slide oldSlide,Slide newSlide);
 }

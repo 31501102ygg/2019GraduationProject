@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.zucc.ygg.movie.dao.ShortCommentaryMapper">
+  <resultMap id="BaseResultMap" type="com.edu.zucc.ygg.movie.domain.ShortCommentary">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="movieId" jdbcType="INTEGER" property="movieid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="star" jdbcType="INTEGER" property="star" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="remove_date" jdbcType="TIMESTAMP" property="removeDate" />
+  </resultMap>
+
+    <select id="searchShortCommentary" resultMap="BaseResultMap">
+      select * from short_commentary
+      where userId=#{userId} and movieId = #{movieId} and remove_date is null
+    </select>
+
+  <select id="searchShortCommmentaryListByMovie" resultMap="BaseResultMap">
+      select * from short_commentary
+      where movieId=#{movieId} and remove_date is null
+  </select>
+
+  <select id="searchShortCommmentaryListByUser" resultMap="BaseResultMap">
+      select * from short_commentary
+      where userId=#{userId} and remove_date is null
+  </select>
+
+  <select id="fuzzySearchShortCommentary" resultType="com.edu.zucc.ygg.movie.dto.ShortCommentaryDto">
+      SELECT a.id as id,a.movieId as movieId,c.name as movieName,c.img_url as movieImg,
+              b.id as userId,b.user_name as username,a.content as content,a.star as star,
+              a.score as score,a.create_date as createDate
+      FROM short_commentary a
+        inner join users b on a.userId = b.id
+        inner join movie c on a.movieId = c.id
+      where a.remove_date is null
+        and b.user_name like CONCAT('%',#{username},'%')
+        and c.name like CONCAT('%',#{movieName},'%')
+      order by a.create_date desc
+</select>
+
+</mapper>

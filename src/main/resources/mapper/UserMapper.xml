@@ -107,4 +107,19 @@
         from users a left join user_info b on a.id = b.user_id
         where a.user_name = #{username}
     </select>
+
+    <select id="getUserInfoById" resultType="com.edu.zucc.ygg.movie.dto.UserDto" parameterType="integer">
+        select b.id as id,a.user_name as username,b.phoneNumber as phoneNumber,b.email as email,b.sex as sex,
+        b.personality_signature as personalitySignature,b.birth_day as birthDay,b.occupation as occupation,
+        b.location as location,DATE_FORMAT(a.create_time,'%Y-%m-%d')as createDate,b.nickname as nickname,a.ban as ban,
+        b.header_url as headerImgUrl
+        from users a left join user_info b on a.id = b.user_id
+        where a.id = #{userId}
+    </select>
+
+    <select id="getUserId" resultType="java.lang.Integer">
+        select id
+        from users
+        where user_name = #{username}
+    </select>
 </mapper>

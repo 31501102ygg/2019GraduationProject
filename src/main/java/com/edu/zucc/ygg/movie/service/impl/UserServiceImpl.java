@@ -119,6 +119,11 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     }
 
     @Override
+    public UserDto getUser(Integer userId) {
+        return userMapper.getUserInfoById(userId);
+    }
+
+    @Override
     public User getUser(String username) {
         return userMapper.getUser(username);
     }
@@ -126,6 +131,11 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     @Override
     public void updateUserHeaderImg(String username, String headerImg) {
         userMapper.updateUserHeaderImg(username,headerImg);
+    }
+
+    @Override
+    public Integer getUserId(String username) {
+        return userMapper.getUserId(username);
     }
 
     private User convertToUser(UserDto userDto){

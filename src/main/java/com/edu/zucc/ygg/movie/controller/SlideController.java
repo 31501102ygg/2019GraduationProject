@@ -1,7 +1,6 @@
 package com.edu.zucc.ygg.movie.controller;
 
 import com.edu.zucc.ygg.movie.constant.ApplicationConstant;
-import com.edu.zucc.ygg.movie.domain.Movie;
 import com.edu.zucc.ygg.movie.domain.Slide;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.dto.SlideDto;
@@ -9,6 +8,7 @@ import com.edu.zucc.ygg.movie.service.SlideService;
 import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -17,9 +17,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/slide")
@@ -39,6 +37,7 @@ public class SlideController {
         if (slideDto.getImg()==null)
             return ResultDtoFactory.toNack("图片不能为空");
         Slide slide = slideDto.toSlide();
+        slide.setState(0);
         slideService.slideAdd(slide);
         return ResultDtoFactory.toAck("幻灯片添加成功",slide);
     }
@@ -91,14 +90,33 @@ public class SlideController {
         PageHelper.startPage(slideDto.getPageNum(), slideDto.getPageSize());
         PageInfo<Slide> pageInfo = new PageInfo<Slide>(slideService.searchSlideList(slideDto.getTitle()));
         List<Slide> slideList = pageInfo.getList();
+        Long total = pageInfo.getTotal();
         if (slideList!=null&&slideList.size()>0){
             slideList.forEach(slide -> {
                 SlideDto slideDto1 = new SlideDto(slide);
                 slideDto1.transformDateToString();
                 slideDtos.add(slideDto1);
             });
-            return ResultDtoFactory.toAck("幻灯片查询成功",slideDtos);
         }
-        return ResultDtoFactory.toNack("幻灯片查询失败");
+        Map map = new HashMap();
+        map.put("total",total);
+        map.put("list",slideDtos);
+        return ResultDtoFactory.toAck("幻灯片查询成功",map);
+    }
+
+    @RequestMapping(value = "/exchange",method = RequestMethod.GET)
+    @ApiOperation(value = "幻灯片显示替换")
+    @RequiresRoles("admin")
+    public ResultDto exchangeShowSlide(@RequestParam Integer oldSlideId,@RequestParam Integer newSlideId){
+        if (oldSlideId==null||newSlideId==null||oldSlideId<1||newSlideId<1)
+            return ResultDtoFactory.toNack("输入的slideId为空或者小于1");
+        Slide oldSlide = new Slide();
+        oldSlide.setId(oldSlideId);
+        oldSlide.setState(0);
+        Slide newSlide = new Slide();
+        newSlide.setId(newSlideId);
+        newSlide.setState(1);
+        slideService.exchangeShowSlide(oldSlide,newSlide);
+        return ResultDtoFactory.toAck("幻灯片交换成功");
     }
 }

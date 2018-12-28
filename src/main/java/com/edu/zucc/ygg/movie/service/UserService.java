@@ -25,8 +25,11 @@ public interface UserService extends Service<User>{
 
     UserDto getUserByUserName(String username);
 
+    UserDto getUser(Integer userId);
+
     User getUser(String username);
 
     void updateUserHeaderImg(String username,String headerImg);
 
+    Integer getUserId(String username);
 }
