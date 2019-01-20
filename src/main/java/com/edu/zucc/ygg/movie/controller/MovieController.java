@@ -3,6 +3,7 @@ package com.edu.zucc.ygg.movie.controller;
 import com.edu.zucc.ygg.movie.constant.ApplicationConstant;
 import com.edu.zucc.ygg.movie.domain.Movie;
 import com.edu.zucc.ygg.movie.dto.MovieDto;
+import com.edu.zucc.ygg.movie.dto.MovieSimpleInfoDto;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.exception.ImgException;
 import com.edu.zucc.ygg.movie.service.MovieService;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -120,4 +122,23 @@ public class MovieController {
         movie.transformDateToString();
         return ResultDtoFactory.toAck("电影信息查询成功",movie);
     }
+
+    @RequestMapping(value = "/info/simple",method = RequestMethod.GET)
+    @ApiOperation(value = "获取某部电影的简要信息")
+    public ResultDto getMovieSimpleInfo(@RequestParam Integer movieId){
+        Movie movie = movieService.getMovieInfo(movieId);
+        MovieSimpleInfoDto movieSimpleInfoDto = new MovieSimpleInfoDto(movie);
+        String director = movie.getDirector();
+        director = director.split("/")[0];
+        String actors = movie.getActors();
+        actors = actors.split("/")[0];
+        String location = movie.getMakeState();
+        location = location.split("/")[0];
+        String language = movie.getLanguage();
+        language = language.split("/")[0];
+        String simpleInfo = "导演 "+director+"演员 "+actors+"/"+location+"/"+language;
+        movieSimpleInfoDto.setSimpleInfo(simpleInfo);
+        return ResultDtoFactory.toAck("电影简要信息查询成功",movieSimpleInfoDto);
+    }
+
 }

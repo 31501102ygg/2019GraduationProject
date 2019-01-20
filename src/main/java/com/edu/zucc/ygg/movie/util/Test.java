@@ -4,6 +4,13 @@ import com.edu.zucc.ygg.movie.domain.Movie;
 import com.edu.zucc.ygg.movie.exception.ImgException;
 import com.edu.zucc.ygg.movie.service.UpImgService;
 import com.edu.zucc.ygg.movie.service.impl.UpImgServiceImpl;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
+import org.xmlunit.util.Nodes;
 import tk.mybatis.mapper.util.StringUtil;
 
 import java.io.*;
@@ -168,17 +175,20 @@ public class Test {
 //        String img = "https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2516578307.jpg";
 //        getHtmlPicture(img,filePath,null);
 //        uploadImg("C:/Users/de'l'l/Desktop/testImg/p2233971046.jpg");
-        List<Movie> movieList = Test.searchMovieAll();
-        for (Movie movie:movieList){
-            String filePath = "C:\\Users\\de'l'l\\Desktop\\testImg";
-            String oldImgUrl = movie.getImgUrl();
-            String fileName = getHtmlPicture(oldImgUrl,filePath,null);
-            String newImgUrl = uploadImg("C:/Users/de'l'l/Desktop/testImg/"+fileName);
-            if (newImgUrl!=null){
-                movie.setImgUrl(newImgUrl);
-                updateMovieImg(movie);
-            }
-        }
+//        List<Movie> movieList = Test.searchMovieAll();
+//        for (Movie movie:movieList){
+//            String filePath = "C:\\Users\\de'l'l\\Desktop\\testImg";
+//            String oldImgUrl = movie.getImgUrl();
+//            String fileName = getHtmlPicture(oldImgUrl,filePath,null);
+//            String newImgUrl = uploadImg("C:/Users/de'l'l/Desktop/testImg/"+fileName);
+//            if (newImgUrl!=null){
+//                movie.setImgUrl(newImgUrl);
+//                updateMovieImg(movie);
+//            }
+//        }
+
+        String content = "<p>骋和梅利两兄弟被强兽人抓走,亚拉冈和佛罗多兵分两路，分别前往末日山脉焚毁至尊魔戒和追赶并救援被抓的霍比特人，佛罗多和山姆一路，亚拉冈，金利，莱戈拉斯一路。佛罗多的食物不多，路线不明，征途迷茫，却发现了穷追不舍的史麦戈，后者渴望拿回他曾经拥有的魔戒。</p><p>佛罗多意识到史麦戈的悲惨遭遇，又得知史麦戈知道前往摩多的路线，自然的让他成为了向导。山姆是佛罗多的后勤管理人员，贴身保镖，迷茫时的开导者，可谓兢兢业业，没有他，佛罗多不可能成功地完成使命。亚拉冈这边呢，遇到了白袍甘道夫，发现两个霍比特人进入了树林，并参加了树人会议，后来成功摧毁了萨鲁曼的基地。甘道夫带领亚拉冈他们拯救了受到控制的落汗国王，并抵御兽人大军的侵略。</p><p>魔戒远征队的传奇故事告一段落，从头到尾，向我们展示了霍比特人的冒险，勇敢，重情重义的优良品格，以及甘道夫的运筹帷幄，亚拉冈的沉稳，男子汉的气概，精灵的能力出众，矮人的任劳任怨。也从一些人的言行中展示了贪婪，残忍的特点。不可否认，人性中好的坏的兼备，就连向来理性的佛罗多也会迷失，我们应该正视这一点。</p><p>忽然想到这一句</p><p><span class=\"fr-img-caption fr-fic fr-dib\" style=\"width: 300px;\"><span class=\"fr-img-wrap\"><img src=\"http://ygg-31501102-bucket.oss-cn-shenzhen.aliyuncs.com/commentary_img/1547908633647.jpg\"><span class=\"fr-inner\">测试图片<br><br></span></span></span></p><p>&quot;或许我们努力的活着不是去让这个世界善良而是不让自己丑恶。&quot;</p>";
+
     }
     public static String getHtmlPicture(String httpUrl, String filePath , String myFileName) {
 

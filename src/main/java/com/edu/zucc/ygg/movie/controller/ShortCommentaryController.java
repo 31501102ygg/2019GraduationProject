@@ -99,7 +99,7 @@ public class ShortCommentaryController {
         List<ShortCommentaryDto> shortCommentaryDtos = new ArrayList<>();
         int pageSize = pageHelperDto.getPageSize()<1?10:pageHelperDto.getPageSize();
         int pageNum = pageHelperDto.getPageNum()<1?1:pageHelperDto.getPageNum();
-        PageHelper.startPage(pageSize,pageNum);
+        PageHelper.startPage(pageNum,pageSize);
         PageInfo<ShortCommentary> pageInfo = new PageInfo<ShortCommentary>(
                 shortCommentaryService.searchShortCommentaryListByMovie(pageHelperDto.getData()));
         List<ShortCommentary> shortCommentaries = pageInfo.getList();
@@ -122,7 +122,7 @@ public class ShortCommentaryController {
         List<ShortCommentaryDto> shortCommentaryDtos = new ArrayList<>();
         int pageSize = pageHelperDto.getPageSize()<1?10:pageHelperDto.getPageSize();
         int pageNum = pageHelperDto.getPageNum()<1?1:pageHelperDto.getPageNum();
-        PageHelper.startPage(pageSize,pageNum);
+        PageHelper.startPage(pageNum,pageSize);
         PageInfo<ShortCommentary> pageInfo = new PageInfo<ShortCommentary>(
                 shortCommentaryService.searchShortCommentaryListByUser(pageHelperDto.getData()));
         List<ShortCommentary> shortCommentaries = pageInfo.getList();
@@ -151,7 +151,7 @@ public class ShortCommentaryController {
             return ResultDtoFactory.toNack("请输入电影名");
         int pageSize = pageHelperDto.getPageSize()<1?10:pageHelperDto.getPageSize();
         int pageNum = pageHelperDto.getPageNum()<1?1:pageHelperDto.getPageNum();
-        PageHelper.startPage(pageSize,pageNum);
+        PageHelper.startPage(pageNum,pageSize);
         PageInfo<ShortCommentaryDto> pageInfo = new PageInfo<ShortCommentaryDto>(
                 shortCommentaryService.fuzzySearchShortCommentaryListByUser(userName,movieName));
         List<ShortCommentaryDto> shortCommentaries = pageInfo.getList();

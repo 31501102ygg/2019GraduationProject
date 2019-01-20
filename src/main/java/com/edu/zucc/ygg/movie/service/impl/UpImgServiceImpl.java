@@ -59,4 +59,16 @@ public class UpImgServiceImpl implements UpImgService {
         String[] split = imgUrl.split("\\?");
         return split[0];
     }
+
+    @Override
+    public String uploadCommentaryImg(MultipartFile file) throws ImgException {
+        if (file == null || file.getSize() <= 0) {
+            throw new ImgException("file不能为空");
+        }
+        OSSClientUtil ossClient=new OSSClientUtil();
+        String name = ossClient.uploadImg(file,"commentary_img/");
+        String imgUrl = ossClient.getHearImgUrl(name,"commentary_img/");
+        String[] split = imgUrl.split("\\?");
+        return split[0];
+    }
 }

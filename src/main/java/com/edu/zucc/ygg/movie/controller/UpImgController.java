@@ -39,6 +39,12 @@ public class UpImgController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 头像上传接口
+     * @param request
+     * @param file
+     * @return
+     */
     @RequestMapping(value = "/headImgUpload", method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String headImgUpload(HttpServletRequest request, MultipartFile file) {
@@ -57,6 +63,32 @@ public class UpImgController {
         return JSONObject.toJSONString(value);
     }
 
+    /**
+     * 影评图片上传接口
+     * @param request
+     * @param file
+     * @return
+     */
+    @RequestMapping(value = "/commentary/upload", method = RequestMethod.POST)
+    @ResponseBody
+    public String commentaryImgUpload(HttpServletRequest request, MultipartFile file) {
+        Map<String, String> value = new HashMap<String, String>();
+        try {
+            String url = upImgService.uploadCommentaryImg(file);
+            logger.debug("图片路径{}",url);
+            value.put("link",url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return JSONObject.toJSONString(value);
+    }
+
+    /**
+     * 电影图片上传接口
+     * @param request
+     * @param file
+     * @return
+     */
     @RequestMapping(value = "/upload/img/movie", method = RequestMethod.POST)
     @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
     @ResponseBody
@@ -74,6 +106,12 @@ public class UpImgController {
         }
     }
 
+    /**
+     * 轮播图片上传接口
+     * @param request
+     * @param file
+     * @return
+     */
     @RequestMapping(value = "/upload/img/slide", method = RequestMethod.POST)
     @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
     @RequiresRoles("admin")
