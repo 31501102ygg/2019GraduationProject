@@ -2,11 +2,14 @@ package com.edu.zucc.ygg.movie.controller;
 
 import com.edu.zucc.ygg.movie.constant.ApplicationConstant;
 import com.edu.zucc.ygg.movie.domain.LongCommentary;
+import com.edu.zucc.ygg.movie.domain.Movie;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.service.LongCommentaryService;
 import com.edu.zucc.ygg.movie.service.UserService;
 import com.edu.zucc.ygg.movie.util.JWTUtil;
 import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/long")
@@ -56,6 +60,17 @@ public class LongCommentaryController {
         longCommentary.setUserId(userService.getUserId(tokenUserName));
         longCommentary = longCommentaryService.add(longCommentary);
         return ResultDtoFactory.toAck("影评添加成功",longCommentary);
+    }
+
+    @RequestMapping(value = "get",method = RequestMethod.GET)
+    @ApiOperation(value = "获取影评列表")
+    public ResultDto getLongCommentaryList(@RequestParam int page){
+        int pageNum = page==0?1:page;
+        int pageSize = 10;
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<LongCommentary> pageInfo = new PageInfo<LongCommentary>(longCommentaryService.getLongCommentaryList());
+        List<LongCommentary> commentaries = pageInfo.getList();
+        return ResultDtoFactory.toAck("影评查询成功",commentaries);
     }
 
     @RequestMapping(value = "test",method = RequestMethod.POST)

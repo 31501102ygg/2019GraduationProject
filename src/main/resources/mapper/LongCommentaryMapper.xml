@@ -17,4 +17,8 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+    <select id="getLongCommentaryList" resultType="com.edu.zucc.ygg.movie.domain.LongCommentary">
+      select * from long_commentary
+      order by create_time desc
+    </select>
 </mapper>

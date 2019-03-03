@@ -1,16 +1,23 @@
 package com.edu.zucc.ygg.movie.service.impl;
 
+import com.edu.zucc.ygg.movie.dao.LongCommentaryMapper;
 import com.edu.zucc.ygg.movie.domain.LongCommentary;
 import com.edu.zucc.ygg.movie.service.LongCommentaryService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
 public class LongCommentaryServiceImpl extends BaseService<LongCommentary> implements LongCommentaryService {
+    @Autowired
+    LongCommentaryMapper longCommentaryMapper;
+
     @Override
     public LongCommentary add(LongCommentary longCommentary) {
         filterContent(longCommentary);
@@ -32,5 +39,10 @@ public class LongCommentaryServiceImpl extends BaseService<LongCommentary> imple
         }
         longCommentary.setFilterContent(filterContent.toString());
         longCommentary.setPureText(pureText.toString());
+    }
+
+    @Override
+    public List<LongCommentary> getLongCommentaryList() {
+        return longCommentaryMapper.getLongCommentaryList();
     }
 }
