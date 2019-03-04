@@ -2,6 +2,7 @@ package com.edu.zucc.ygg.movie.service.impl;
 
 import com.edu.zucc.ygg.movie.dao.LongCommentaryMapper;
 import com.edu.zucc.ygg.movie.domain.LongCommentary;
+import com.edu.zucc.ygg.movie.dto.LongCommentaryDto;
 import com.edu.zucc.ygg.movie.service.LongCommentaryService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,7 +43,7 @@ public class LongCommentaryServiceImpl extends BaseService<LongCommentary> imple
     }
 
     @Override
-    public List<LongCommentary> getLongCommentaryList() {
+    public List<LongCommentaryDto> getLongCommentaryList() {
         return longCommentaryMapper.getLongCommentaryList();
     }
 }

@@ -3,6 +3,7 @@ package com.edu.zucc.ygg.movie.controller;
 import com.edu.zucc.ygg.movie.constant.ApplicationConstant;
 import com.edu.zucc.ygg.movie.domain.LongCommentary;
 import com.edu.zucc.ygg.movie.domain.Movie;
+import com.edu.zucc.ygg.movie.dto.LongCommentaryDto;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.service.LongCommentaryService;
 import com.edu.zucc.ygg.movie.service.UserService;
@@ -68,8 +69,8 @@ public class LongCommentaryController {
         int pageNum = page==0?1:page;
         int pageSize = 10;
         PageHelper.startPage(pageNum, pageSize);
-        PageInfo<LongCommentary> pageInfo = new PageInfo<LongCommentary>(longCommentaryService.getLongCommentaryList());
-        List<LongCommentary> commentaries = pageInfo.getList();
+        PageInfo<LongCommentaryDto> pageInfo = new PageInfo<LongCommentaryDto>(longCommentaryService.getLongCommentaryList());
+        List<LongCommentaryDto> commentaries = pageInfo.getList();
         return ResultDtoFactory.toAck("影评查询成功",commentaries);
     }
 
