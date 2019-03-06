@@ -7,6 +7,7 @@ import com.edu.zucc.ygg.movie.dto.LongCommentaryDto;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.service.LongCommentaryService;
 import com.edu.zucc.ygg.movie.service.UserService;
+import com.edu.zucc.ygg.movie.service.impl.LongCommentaryServiceImpl;
 import com.edu.zucc.ygg.movie.util.JWTUtil;
 import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
 import com.github.pagehelper.PageHelper;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.util.StringUtil;
 
@@ -29,6 +31,8 @@ public class LongCommentaryController {
     LongCommentaryService longCommentaryService;
     @Autowired
     UserService userService;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @RequestMapping(value = "add/normal",method = RequestMethod.POST)
     @ApiOperation(value = "普通用户影评上传接口")
@@ -74,9 +78,29 @@ public class LongCommentaryController {
         return ResultDtoFactory.toAck("影评查询成功",commentaries);
     }
 
-    @RequestMapping(value = "test",method = RequestMethod.POST)
-    @ApiOperation(value = "普通用户影评上传接口")
-    public ResultDto filterTest(@RequestParam String content){
-        return ResultDtoFactory.toAck("影评添加成功");
+    @RequestMapping(value = "like",method = RequestMethod.GET)
+    @ApiOperation(value = "普通用户影评点赞接口")
+    public ResultDto likeCommetary(@RequestParam String id,@RequestParam String userId){
+        String dir = "like:";
+        redisTemplate.opsForSet().add(dir+id,userId);
+        long count = redisTemplate.opsForSet().size(dir+id);
+        return ResultDtoFactory.toAck("点赞成功",count);
+    }
+
+    @RequestMapping(value = "like/cancel",method = RequestMethod.GET)
+    @ApiOperation(value = "普通用户影评点赞取消接口")
+    public ResultDto cancelLikeCommetary(@RequestParam String id,@RequestParam String userId){
+        String dir = "like:";
+        redisTemplate.opsForSet().remove(dir+id,userId,userId);
+        long count = redisTemplate.opsForSet().size(dir+id);
+        return ResultDtoFactory.toAck("点赞取消成功",count);
+    }
+
+    @RequestMapping(value = "like/search",method = RequestMethod.GET)
+    @ApiOperation(value = "普通用户影评点赞接口")
+    public ResultDto likeSearchCommetary(@RequestParam String id,@RequestParam String userId){
+        String dir = "like:";
+        boolean exist = redisTemplate.opsForSet().isMember(dir+id,userId);
+        return ResultDtoFactory.toAck("点赞查询成功",exist);
     }
 }
