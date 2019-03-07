@@ -1,6 +1,8 @@
 package com.edu.zucc.ygg.movie.service.impl;
 
+import com.edu.zucc.ygg.movie.dao.CollectionsMapper;
 import com.edu.zucc.ygg.movie.dao.LongCommentaryMapper;
+import com.edu.zucc.ygg.movie.domain.Collections;
 import com.edu.zucc.ygg.movie.domain.LongCommentary;
 import com.edu.zucc.ygg.movie.dto.LongCommentaryDto;
 import com.edu.zucc.ygg.movie.service.LongCommentaryService;
@@ -9,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,10 @@ import java.util.List;
 public class LongCommentaryServiceImpl extends BaseService<LongCommentary> implements LongCommentaryService {
     @Autowired
     LongCommentaryMapper longCommentaryMapper;
+    @Autowired
+    CollectionsMapper collectionsMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public LongCommentary add(LongCommentary longCommentary) {
@@ -45,5 +52,38 @@ public class LongCommentaryServiceImpl extends BaseService<LongCommentary> imple
     @Override
     public List<LongCommentaryDto> getLongCommentaryList() {
         return longCommentaryMapper.getLongCommentaryList();
+    }
+
+    @Override
+    public boolean collection(int id, int userId) {
+        Collections collection = new Collections();
+        collection.setCommentaryId(id);
+        collection.setUserId(userId);
+        int ops = collectionsMapper.insert(collection);
+        return ops>0?true:false;
+    }
+
+    @Override
+    public boolean cancelCollection(int id, int userId) {
+        Collections collection = new Collections();
+        collection.setCommentaryId(id);
+        collection.setUserId(userId);
+        int ops = collectionsMapper.delete(collection);
+        return ops>0?true:false;
+    }
+
+    @Override
+    public boolean searchLike(int userId, String commentaryId) {
+        String dir = "like:";
+        boolean exist = redisTemplate.opsForSet().isMember(dir+commentaryId,userId);
+        return exist;
+    }
+
+    @Override
+    public boolean searchCollections(int userId, int commentaryId) {
+        int count = collectionsMapper.exist(userId,commentaryId);
+        if (count>0)
+            return true;
+        return false;
     }
 }
