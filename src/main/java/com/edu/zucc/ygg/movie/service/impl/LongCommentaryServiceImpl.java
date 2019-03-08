@@ -42,7 +42,8 @@ public class LongCommentaryServiceImpl extends BaseService<LongCommentary> imple
         for (Element element:pList){
             if (element.children().size()==0) {
                 filterContent.append(element.toString());
-                pureText.append(element.text());
+                if (pureText.length()<300)
+                    pureText.append(element.text());
             }
         }
         longCommentary.setFilterContent(filterContent.toString());
@@ -85,5 +86,10 @@ public class LongCommentaryServiceImpl extends BaseService<LongCommentary> imple
         if (count>0)
             return true;
         return false;
+    }
+
+    @Override
+    public List<LongCommentaryDto> getCollection(int userId) {
+        return longCommentaryMapper.getCollectionCommentaryList(userId);
     }
 }

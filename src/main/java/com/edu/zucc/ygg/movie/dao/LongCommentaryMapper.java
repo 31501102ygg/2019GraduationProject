@@ -11,4 +11,6 @@ import java.util.List;
 public interface LongCommentaryMapper extends MyMapper<LongCommentary> {
 
     public List<LongCommentaryDto> getLongCommentaryList();
+
+    public List<LongCommentaryDto> getCollectionCommentaryList(int userId);
 }

@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/long")
@@ -71,24 +73,50 @@ public class LongCommentaryController {
     @ApiOperation(value = "获取影评列表")
     public ResultDto getLongCommentaryList(HttpServletRequest request,@RequestParam int page){
         int pageNum = page==0?1:page;
-        int pageSize = 10;
+        int pageSize = 5;
         PageHelper.startPage(pageNum, pageSize);
         PageInfo<LongCommentaryDto> pageInfo = new PageInfo<LongCommentaryDto>(longCommentaryService.getLongCommentaryList());
         List<LongCommentaryDto> commentaries = pageInfo.getList();
         String token = request.getHeader("Authorization");
-        if (StringUtil.isEmpty(token)){
+        String tokenUserName = JWTUtil.getUsername(token);
+        Integer userId = userService.getUserId(tokenUserName);
+        if(userId == null){
             for (LongCommentaryDto commentaryDto:commentaries){
                 commentaryDto.setLike(false);
                 commentaryDto.setCollection(false);
             }
-        }
-        String tokenUserName = JWTUtil.getUsername(token);
-        int userId = userService.getUserId(tokenUserName);
-        for (LongCommentaryDto commentaryDto:commentaries){
-            commentaryDto.setLike(longCommentaryService.searchLike(userId,String.valueOf(commentaryDto.getId())));
-            commentaryDto.setCollection(longCommentaryService.searchCollections(userId,commentaryDto.getId()));
+        }else {
+            for (LongCommentaryDto commentaryDto : commentaries) {
+                commentaryDto.setLike(longCommentaryService.searchLike(userId, String.valueOf(commentaryDto.getId())));
+                commentaryDto.setCollection(longCommentaryService.searchCollections(userId, commentaryDto.getId()));
+            }
         }
         return ResultDtoFactory.toAck("影评查询成功",commentaries);
+    }
+
+    @RequestMapping(value = "get/collection",method = RequestMethod.GET)
+    @ApiOperation(value = "获取收藏影评列表")
+    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
+    public ResultDto getCollectionCommentaryList(HttpServletRequest request,@RequestParam int page){
+        String token = request.getHeader("Authorization");
+        if (StringUtil.isEmpty(token)){
+            return ResultDtoFactory.toNack("没有TOKEN");
+        }
+        String tokenUserName = JWTUtil.getUsername(token);
+        Integer userId = userService.getUserId(tokenUserName);
+        if (userId!=null){
+            int pageNum = page==0?1:page;
+            int pageSize = 5;
+            PageHelper.startPage(pageNum, pageSize);
+            PageInfo<LongCommentaryDto> pageInfo = new PageInfo<LongCommentaryDto>(longCommentaryService.getCollection(userId));
+            List<LongCommentaryDto> longCommentaryDtos = pageInfo.getList();
+            Map map = new HashMap();
+            map.put("total",pageInfo.getTotal());
+            map.put("list",longCommentaryDtos);
+            return ResultDtoFactory.toAck("查询成功",map);
+        }else{
+            return ResultDtoFactory.toNack("没有用户ID");
+        }
     }
 
     @RequestMapping(value = "like",method = RequestMethod.GET)

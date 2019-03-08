@@ -27,4 +27,16 @@
         inner join user_info ui on lc.user_id = ui.user_id
       order by lc.create_time desc
     </select>
+
+    <select id="getCollectionCommentaryList" resultType="com.edu.zucc.ygg.movie.dto.LongCommentaryDto">
+      select lc.id as id,lc.content as content,us.user_name as userName,lc.title as title,
+              mv.img_url as movieUrl,lc.filter_content as filterContent,lc.pure_text as pureContent,
+              ui.header_url as userUrl,lc.score as score,lc.create_time as time
+      from long_commentary lc
+              inner join movie mv on lc.movie_id = mv.id
+              inner join collections co on co.commentary_id = lc.id
+              inner join users us on co.user_id = us.id
+              inner join user_info ui on co.user_id = ui.user_id
+      where co.user_id = #{id}
+    </select>
 </mapper>
