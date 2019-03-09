@@ -92,4 +92,9 @@ public class LongCommentaryServiceImpl extends BaseService<LongCommentary> imple
     public List<LongCommentaryDto> getCollection(int userId) {
         return longCommentaryMapper.getCollectionCommentaryList(userId);
     }
+
+    @Override
+    public LongCommentaryDto get(int id) {
+        return longCommentaryMapper.get(id);
+    }
 }

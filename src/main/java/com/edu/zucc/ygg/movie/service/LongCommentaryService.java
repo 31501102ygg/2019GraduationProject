@@ -21,4 +21,7 @@ public interface LongCommentaryService {
     public boolean searchCollections(int userId,int commentaryId);
 
     public List<LongCommentaryDto> getCollection(int userId);
+
+    public LongCommentaryDto get(int id);
+
 }

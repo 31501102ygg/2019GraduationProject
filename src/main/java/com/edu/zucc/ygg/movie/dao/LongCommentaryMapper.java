@@ -13,4 +13,7 @@ public interface LongCommentaryMapper extends MyMapper<LongCommentary> {
     public List<LongCommentaryDto> getLongCommentaryList();
 
     public List<LongCommentaryDto> getCollectionCommentaryList(int userId);
+
+    public LongCommentaryDto get(int id);
+
 }

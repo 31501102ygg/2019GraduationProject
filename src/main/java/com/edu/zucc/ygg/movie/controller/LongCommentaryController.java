@@ -94,6 +94,13 @@ public class LongCommentaryController {
         return ResultDtoFactory.toAck("影评查询成功",commentaries);
     }
 
+    @RequestMapping(value = "get/id",method = RequestMethod.GET)
+    @ApiOperation(value = "获取影评列表")
+    public ResultDto getLongCommentary(@RequestParam int id){
+        LongCommentaryDto longCommentaryDto = longCommentaryService.get(id);
+        return ResultDtoFactory.toAck("影评查询成功",longCommentaryDto);
+    }
+
     @RequestMapping(value = "get/collection",method = RequestMethod.GET)
     @ApiOperation(value = "获取收藏影评列表")
     @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})

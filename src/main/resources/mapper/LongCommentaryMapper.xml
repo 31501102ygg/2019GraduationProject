@@ -39,4 +39,14 @@
               inner join user_info ui on co.user_id = ui.user_id
       where co.user_id = #{id}
     </select>
+    <select id="get" resultType="com.edu.zucc.ygg.movie.dto.LongCommentaryDto">
+        select lc.id as id,lc.content as content,us.user_name as userName,lc.title as title,
+              mv.img_url as movieUrl,lc.filter_content as filterContent,lc.pure_text as pureContent,
+              ui.header_url as userUrl,lc.score as score,lc.create_time as time
+      from long_commentary lc
+        inner join movie mv on lc.movie_id = mv.id
+        inner join users us on lc.user_id = us.id
+        inner join user_info ui on lc.user_id = ui.user_id
+        where lc.id = #{id}
+    </select>
 </mapper>
