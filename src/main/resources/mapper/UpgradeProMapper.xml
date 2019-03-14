@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.zucc.ygg.movie.dao.UpgradeProMapper">
+  <resultMap id="BaseResultMap" type="com.edu.zucc.ygg.movie.domain.UpgradePro">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="auditingTime" jdbcType="TIMESTAMP" property="auditingtime" />
+  </resultMap>
+  <update id="updateState">
+      update upgrade_pro
+      set state = #{state} , auditingTime = now()
+      where id = #{id}
+  </update>
+  <select id="searchUpgrade" resultType="com.edu.zucc.ygg.movie.domain.UpgradePro">
+      select *
+      from upgrade_pro
+      where state = #{state}
+      <if test="username !=null and username !=''">
+        and username like concat(concat('%',#{username}),'%')
+      </if>
+      order by createTime ASC
+    </select>
+</mapper>
