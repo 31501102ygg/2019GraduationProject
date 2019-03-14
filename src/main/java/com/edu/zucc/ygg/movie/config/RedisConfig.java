@@ -57,7 +57,7 @@ public class RedisConfig extends CachingConfigurerSupport {
                 add("codeNameCache");
             }
         };
-        builder.cacheDefaults(this.getRedisCacheConfigurationWithTtl(30 * 60));
+        builder.cacheDefaults(this.getRedisCacheConfigurationWithTtl(30*24*60*60));
         builder.initialCacheNames(cacheNames);
         builder.withInitialCacheConfigurations(this.getRedisCacheConfigurationMap());
         return builder.build();

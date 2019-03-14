@@ -41,6 +41,16 @@
     <if test="language != null and language != ''" >
       and language like CONCAT('%',#{language},'%')
     </if>
+    <if test="keyword != null and keyword != ''" >
+      and id in (
+      select id
+      from movie
+      where name like CONCAT('%',#{keyword},'%')
+      or foreign_name like CONCAT('%',#{keyword},'%')
+      or actors like CONCAT('%',#{keyword},'%')
+      or director like CONCAT('%',#{keyword},'%')
+      )
+    </if>
     order by create_time Desc
   </select>
 

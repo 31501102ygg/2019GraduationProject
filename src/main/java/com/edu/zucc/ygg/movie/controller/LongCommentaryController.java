@@ -4,6 +4,7 @@ import com.edu.zucc.ygg.movie.constant.ApplicationConstant;
 import com.edu.zucc.ygg.movie.domain.LongCommentary;
 import com.edu.zucc.ygg.movie.domain.Movie;
 import com.edu.zucc.ygg.movie.dto.LongCommentaryDto;
+import com.edu.zucc.ygg.movie.dto.LongCommentarySearchDto;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.service.LongCommentaryService;
 import com.edu.zucc.ygg.movie.service.UserService;
@@ -89,6 +90,7 @@ public class LongCommentaryController {
             for (LongCommentaryDto commentaryDto : commentaries) {
                 commentaryDto.setLike(longCommentaryService.searchLike(userId, String.valueOf(commentaryDto.getId())));
                 commentaryDto.setCollection(longCommentaryService.searchCollections(userId, commentaryDto.getId()));
+                commentaryDto.setLikeNumber(longCommentaryService.likeNumber(commentaryDto.getId()));
             }
         }
         return ResultDtoFactory.toAck("影评查询成功",commentaries);
@@ -184,7 +186,7 @@ public class LongCommentaryController {
     }
 
     @RequestMapping(value = "collection/cancel",method = RequestMethod.GET)
-    @ApiOperation(value = "普通用户影评收藏接口")
+    @ApiOperation(value = "普通用户影评收藏取消接口")
     @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
     @RequiresRoles("user")
     public ResultDto cancelCollectionCommetary(HttpServletRequest request,@RequestParam int id){
@@ -197,5 +199,70 @@ public class LongCommentaryController {
         if (ops)
             return ResultDtoFactory.toAck("取消收藏成功");
         return ResultDtoFactory.toNack("取消收藏失败");
+    }
+
+    @RequestMapping(value = "search",method = RequestMethod.POST)
+    @ApiOperation(value = "影评查询接口")
+    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
+    @RequiresRoles("admin")
+    public ResultDto searchCommetary(@RequestBody LongCommentarySearchDto searchDto){
+        int pageNum = searchDto.getPageNum()==0?1:searchDto.getPageNum();
+        int pageSize = searchDto.getPageSize()==0?10:searchDto.getPageSize();
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<LongCommentaryDto> pageInfo = new PageInfo<LongCommentaryDto>(longCommentaryService.search(searchDto));
+        List<LongCommentaryDto> commentaries = pageInfo.getList();
+        for (LongCommentaryDto commentaryDto : commentaries) {
+            commentaryDto.setLikeNumber(longCommentaryService.likeNumber(commentaryDto.getId()));
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",commentaries);
+        result.put("total",pageInfo.getTotal());
+        return ResultDtoFactory.toAck("查询成功",result);
+    }
+
+    @RequestMapping(value = "search/user",method = RequestMethod.POST)
+    @ApiOperation(value = "影评查询接口")
+    public ResultDto userSearchCommetary(HttpServletRequest request,@RequestBody LongCommentarySearchDto searchDto){
+        int pageNum = searchDto.getPageNum()==0?1:searchDto.getPageNum();
+        int pageSize = searchDto.getPageSize()==0?5:searchDto.getPageSize();
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<LongCommentaryDto> pageInfo = new PageInfo<LongCommentaryDto>(longCommentaryService.search(searchDto));
+        List<LongCommentaryDto> commentaries = pageInfo.getList();
+        String token = request.getHeader("Authorization");
+        if (token!=null) {
+            String tokenUserName = JWTUtil.getUsername(token);
+            Integer userId = userService.getUserId(tokenUserName);
+            if (userId == null) {
+                for (LongCommentaryDto commentaryDto : commentaries) {
+                    commentaryDto.setLike(false);
+                    commentaryDto.setCollection(false);
+                }
+            } else {
+                for (LongCommentaryDto commentaryDto : commentaries) {
+                    commentaryDto.setLike(longCommentaryService.searchLike(userId, String.valueOf(commentaryDto.getId())));
+                    commentaryDto.setCollection(longCommentaryService.searchCollections(userId, commentaryDto.getId()));
+                    commentaryDto.setLikeNumber(longCommentaryService.likeNumber(commentaryDto.getId()));
+                }
+            }
+        }else{
+            for (LongCommentaryDto commentaryDto : commentaries) {
+                commentaryDto.setLikeNumber(longCommentaryService.likeNumber(commentaryDto.getId()));
+            }
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",commentaries);
+        result.put("total",pageInfo.getTotal());
+        return ResultDtoFactory.toAck("查询成功",result);
+    }
+
+    @RequestMapping(value = "delete",method = RequestMethod.GET)
+    @ApiOperation(value = "影评删除接口")
+    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
+    @RequiresRoles("admin")
+    public ResultDto deleteCommetary(@RequestParam int id){
+        if (longCommentaryService.delete(id)){
+            return ResultDtoFactory.toAck("删除成功");
+        }
+        return ResultDtoFactory.toNack("删除失败");
     }
 }

@@ -4,6 +4,7 @@ import com.edu.zucc.ygg.movie.domain.User;
 import com.edu.zucc.ygg.movie.dto.UserDto;
 import com.edu.zucc.ygg.movie.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -67,4 +68,7 @@ public interface UserMapper extends MyMapper<User> {
     UserDto getUserInfoById(@Param("userId") Integer userId);
 
     Integer getUserId(@Param("username")String username);
+
+    @Update("update users set permission = 'pro' where id = #{id}")
+    public void upgradeToPro(@Param("id")int id);
 }

@@ -36,10 +36,10 @@ public class SRegionController {
     }
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)
     @Cacheable(value = "SRegionCache", key = "'SRegionAll'")
-    public ResultDto SRegion() {
+    public List SRegion() {
         List<SRegion> ls = sRegionService.list(0);
         List<SRegion> ls2 = test(ls);
-        return ResultDtoFactory.toAck("success", ls2);
+        return ls2;
     }
     public List<SRegion> test(List<SRegion> ls) {
         Iterator<SRegion> it = ls.iterator();

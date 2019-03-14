@@ -2,6 +2,7 @@ package com.edu.zucc.ygg.movie.service;
 
 import com.edu.zucc.ygg.movie.domain.LongCommentary;
 import com.edu.zucc.ygg.movie.dto.LongCommentaryDto;
+import com.edu.zucc.ygg.movie.dto.LongCommentarySearchDto;
 
 import java.util.List;
 
@@ -24,4 +25,9 @@ public interface LongCommentaryService {
 
     public LongCommentaryDto get(int id);
 
+    public List<LongCommentaryDto> search(LongCommentarySearchDto searchDto);
+
+    public boolean delete(int id);
+
+    public long likeNumber(int id);
 }

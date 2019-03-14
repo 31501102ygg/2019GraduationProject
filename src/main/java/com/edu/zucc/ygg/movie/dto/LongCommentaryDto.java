@@ -15,8 +15,17 @@ public class LongCommentaryDto implements Serializable {
     private String pureContent;
     private String time;
     private double score;
+    private long likeNumber;
     private boolean collection;
     private boolean like;
+
+    public long getLikeNumber() {
+        return likeNumber;
+    }
+
+    public void setLikeNumber(long likeNumber) {
+        this.likeNumber = likeNumber;
+    }
 
     public boolean isCollection() {
         return collection;

@@ -73,8 +73,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         User addAdmin = convertToUser(userDto);
         addAdmin.setRole("admin");
         addAdmin.setPermission("normal");
-        if(insertSelective(addAdmin)!=null)
+        if(insertSelective(addAdmin)!=null){
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserId(addAdmin.getId());
+            userInfoMapper.insertSelective(userInfo);
             return ResultDtoFactory.toAck("注册成功",addAdmin);
+        }
         else
             return ResultDtoFactory.toAck("用户表数据库错误，注册失败");
     }
@@ -136,6 +140,11 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     @Override
     public Integer getUserId(String username) {
         return userMapper.getUserId(username);
+    }
+
+    @Override
+    public void upgradeToPro(int id) {
+        userMapper.upgradeToPro(id);
     }
 
     private User convertToUser(UserDto userDto){

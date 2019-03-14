@@ -27,6 +27,7 @@ public class LoginController {
     public ResultDto login(@RequestParam("username") String username,@RequestParam("password") String password) {
         String realPassword = userMapper.getPassword(username);
         String role = userMapper.getRole(username);
+        String power = userMapper.getRolePermission(username);
         password = EncryptUtil.encryptMd5(password,username);
         int status = userMapper.checkUserBanStatus(username);
         Map<String,String> map = new HashMap<>();
@@ -39,6 +40,7 @@ public class LoginController {
         } else {
             map.put("token",JWTUtil.createToken(username));
             map.put("role",role);
+            map.put("power",power);
             return ResultDtoFactory.toAck("登录成功",map);
         }
     }

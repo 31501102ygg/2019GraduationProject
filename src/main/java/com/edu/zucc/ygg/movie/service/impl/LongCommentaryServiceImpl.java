@@ -5,6 +5,7 @@ import com.edu.zucc.ygg.movie.dao.LongCommentaryMapper;
 import com.edu.zucc.ygg.movie.domain.Collections;
 import com.edu.zucc.ygg.movie.domain.LongCommentary;
 import com.edu.zucc.ygg.movie.dto.LongCommentaryDto;
+import com.edu.zucc.ygg.movie.dto.LongCommentarySearchDto;
 import com.edu.zucc.ygg.movie.service.LongCommentaryService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -96,5 +97,23 @@ public class LongCommentaryServiceImpl extends BaseService<LongCommentary> imple
     @Override
     public LongCommentaryDto get(int id) {
         return longCommentaryMapper.get(id);
+    }
+
+    @Override
+    public List<LongCommentaryDto> search(LongCommentarySearchDto searchDto) {
+        return longCommentaryMapper.search(searchDto);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        if (longCommentaryMapper.deleteSoft(id) > 0)
+            return true;
+        return false;
+    }
+
+    @Override
+    public long likeNumber(int id) {
+        String dir = "like:";
+        return redisTemplate.opsForSet().size(dir+id);
     }
 }

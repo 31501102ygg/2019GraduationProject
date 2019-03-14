@@ -32,4 +32,6 @@ public interface UserService extends Service<User>{
     void updateUserHeaderImg(String username,String headerImg);
 
     Integer getUserId(String username);
+
+    public void upgradeToPro(int id);
 }

@@ -25,6 +25,7 @@
         inner join movie mv on lc.movie_id = mv.id
         inner join users us on lc.user_id = us.id
         inner join user_info ui on lc.user_id = ui.user_id
+      where lc.state = 0
       order by lc.create_time desc
     </select>
 
@@ -37,7 +38,7 @@
               inner join collections co on co.commentary_id = lc.id
               inner join users us on co.user_id = us.id
               inner join user_info ui on co.user_id = ui.user_id
-      where co.user_id = #{id}
+      where co.user_id = #{id} and lc.state = 0
     </select>
     <select id="get" resultType="com.edu.zucc.ygg.movie.dto.LongCommentaryDto">
         select lc.id as id,lc.content as content,us.user_name as userName,lc.title as title,
@@ -47,6 +48,37 @@
         inner join movie mv on lc.movie_id = mv.id
         inner join users us on lc.user_id = us.id
         inner join user_info ui on lc.user_id = ui.user_id
-        where lc.id = #{id}
+        where lc.id = #{id} and lc.state = 0
+    </select>
+    <select id="search" resultType="com.edu.zucc.ygg.movie.dto.LongCommentaryDto" parameterType="com.edu.zucc.ygg.movie.dto.LongCommentarySearchDto">
+        select lc.id as id,lc.content as content,us.user_name as userName,lc.title as title,
+              mv.img_url as movieUrl,lc.filter_content as filterContent,lc.pure_text as pureContent,
+              ui.header_url as userUrl,lc.score as score,lc.create_time as time
+      from long_commentary lc
+        inner join movie mv on lc.movie_id = mv.id
+        inner join users us on lc.user_id = us.id
+        inner join user_info ui on lc.user_id = ui.user_id
+        where lc.state = 0 and lc.type = #{type}
+        <if test="movieName !=null and movieName !=''">
+            and mv.name like concat(concat('%',#{movieName}),'%')
+        </if>
+
+        <if test="userName !=null and userName !=''">
+            and us.user_name like concat(concat('%',#{userName}),'%')
+        </if>
+
+        <if test="commentaryName !=null and commentaryName !=''" >
+            and lc.title like concat(concat('%',#{commentaryName}),'%')
+        </if>
+
+        <if test="keyword !=null and keyword !=''" >
+            and lc.id in (
+            select lc.id
+            from long_commentary lc
+            inner join movie mv on lc.movie_id = mv.id
+            where lc.title like concat(concat('%',#{keyword}),'%')
+            or  mv.name like concat(concat('%',#{keyword}),'%')
+            )
+        </if>
     </select>
 </mapper>

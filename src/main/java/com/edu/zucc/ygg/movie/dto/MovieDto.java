@@ -23,9 +23,18 @@ public class MovieDto {
     private String actors;
     private String introduction;
     private String language;
+    private String keyword;
 
     private Integer pageSize;
     private Integer pageNum;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public Integer getPageSize() {
         return pageSize;

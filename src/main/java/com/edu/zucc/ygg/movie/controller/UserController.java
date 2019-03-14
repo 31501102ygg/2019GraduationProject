@@ -52,6 +52,14 @@ public class UserController {
         return userService.registerAdmin(userDto);
     }
 
+    @RequestMapping(value = "/admin/update",method = RequestMethod.POST)
+    @ApiOperation(value = "管理员信息更改")
+    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
+    @RequiresRoles("admin")
+    public ResultDto updateAdminInfo(@RequestBody UserDto userDto){
+        return userService.updateUserInfo(userDto);
+    }
+
     @RequestMapping(value = "/admin/delete",method = RequestMethod.GET)
     @RequiresRoles("admin")
     @RequiresPermissions("root")
