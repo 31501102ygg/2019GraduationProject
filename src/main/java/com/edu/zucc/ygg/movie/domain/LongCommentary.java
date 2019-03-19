@@ -57,6 +57,15 @@ public class LongCommentary {
 
     @Column(name = "update_time")
     private Date updateTime;
+    private int score;
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     /**
      * @return id
