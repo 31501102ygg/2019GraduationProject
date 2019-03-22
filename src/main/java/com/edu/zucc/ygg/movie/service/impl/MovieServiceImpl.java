@@ -1,6 +1,9 @@
 package com.edu.zucc.ygg.movie.service.impl;
 
+import com.edu.zucc.ygg.movie.dao.LongCommentaryMapper;
 import com.edu.zucc.ygg.movie.dao.MovieMapper;
+import com.edu.zucc.ygg.movie.dao.ShortCommentaryMapper;
+import com.edu.zucc.ygg.movie.domain.LongCommentary;
 import com.edu.zucc.ygg.movie.domain.Movie;
 import com.edu.zucc.ygg.movie.dto.MovieDto;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
@@ -21,6 +24,10 @@ public class MovieServiceImpl extends BaseService<Movie> implements MovieService
 
     @Autowired
     MovieMapper movieMapper;
+    @Autowired
+    LongCommentaryMapper longCommentaryMapper;
+    @Autowired
+    ShortCommentaryMapper shortCommentaryMapper;
 
     @Override
     public Movie addMovie(MovieDto movieDto) {
@@ -69,5 +76,15 @@ public class MovieServiceImpl extends BaseService<Movie> implements MovieService
     @Override
     public Movie getMovieInfo(Integer movieId) {
         return movieMapper.getMovieInfo(movieId);
+    }
+
+    @Override
+    public void checkUserOperation(Integer movieId, Integer userId,MovieDto movieDto) {
+        if (longCommentaryMapper.checkExist(movieId,userId)>0){
+            movieDto.setLongCommentary(true);
+        }
+        if (shortCommentaryMapper.checkExist(movieId,userId)>0){
+            movieDto.setShortCommentary(true);
+        }
     }
 }

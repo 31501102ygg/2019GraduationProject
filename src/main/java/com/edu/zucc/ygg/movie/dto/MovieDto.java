@@ -25,6 +25,9 @@ public class MovieDto {
     private String language;
     private String keyword;
 
+    private boolean shortCommentary;    //某个用户是否已经对这个电影有短评
+    private boolean longCommentary;     //某个用户是否已经对这个电影有长评
+
     private Integer pageSize;
     private Integer pageNum;
 
@@ -156,6 +159,22 @@ public class MovieDto {
         this.actors = actors;
     }
 
+    public boolean isShortCommentary() {
+        return shortCommentary;
+    }
+
+    public void setShortCommentary(boolean shortCommentary) {
+        this.shortCommentary = shortCommentary;
+    }
+
+    public boolean isLongCommentary() {
+        return longCommentary;
+    }
+
+    public void setLongCommentary(boolean longCommentary) {
+        this.longCommentary = longCommentary;
+    }
+
     public Movie convertToMovie() throws ParseException {
         Movie movie = new Movie();
         movie.setId(this.id);
@@ -175,4 +194,24 @@ public class MovieDto {
         return movie;
     }
 
+    public MovieDto(){}
+    public MovieDto(Movie movie){
+        this.id = movie.getId();
+        this.name = movie.getName();
+        this.foreignName = movie.getForeignName();
+        this.imgUrl = movie.getImgUrl();
+        if (StringUtil.isNotEmpty(movie.getReleaseTimeString()))
+            this.releaseTime = DateUtil.convertToDateString(movie.getReleaseTime());
+        this.releaseTime = movie.getReleaseTimeString();
+        this.sheetLength = movie.getSheetLength();
+        this.makeState = movie.getMakeState();
+        this.type = movie.getType();
+        this.directors = movie.getDirector();
+        this.screenwriter = movie.getScreenwriter();
+        this.actors = movie.getActors();
+        this.introduction = movie.getIntroduction();
+        this.language = movie.getLanguage();
+        this.longCommentary = true;
+        this.shortCommentary = true;
+    }
 }

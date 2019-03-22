@@ -2,12 +2,15 @@ package com.edu.zucc.ygg.movie.controller;
 
 import com.edu.zucc.ygg.movie.constant.ApplicationConstant;
 import com.edu.zucc.ygg.movie.domain.Movie;
+import com.edu.zucc.ygg.movie.domain.User;
 import com.edu.zucc.ygg.movie.dto.MovieDto;
 import com.edu.zucc.ygg.movie.dto.MovieSimpleInfoDto;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.exception.ImgException;
 import com.edu.zucc.ygg.movie.service.MovieService;
 import com.edu.zucc.ygg.movie.service.UpImgService;
+import com.edu.zucc.ygg.movie.service.UserService;
+import com.edu.zucc.ygg.movie.util.JWTUtil;
 import com.edu.zucc.ygg.movie.util.ResultDtoFactory;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tk.mybatis.mapper.util.StringUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +41,8 @@ public class MovieController {
     UpImgService upImgService;
     @Autowired
     MovieService movieService;
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     @ApiOperation(value = "添加电影")
@@ -117,10 +124,17 @@ public class MovieController {
 
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     @ApiOperation(value = "获取某部电影详细信息")
-    public ResultDto getMovieInfo(@RequestParam Integer movieId){
+    public ResultDto getMovieInfo(HttpServletRequest request, @RequestParam Integer movieId){
         Movie movie = movieService.getMovieInfo(movieId);
         movie.transformDateToString();
-        return ResultDtoFactory.toAck("电影信息查询成功",movie);
+        MovieDto movieDto = new MovieDto(movie);
+        String token = request.getHeader("Authorization");
+        if (StringUtil.isNotEmpty(token)) {
+            String tokenUserName = JWTUtil.getUsername(token);
+            User userId = userService.getUser(tokenUserName);
+            movieService.checkUserOperation(movieId,userId.getId(),movieDto);
+        }
+        return ResultDtoFactory.toAck("电影信息查询成功",movieDto);
     }
 
     @RequestMapping(value = "/info/simple",method = RequestMethod.GET)
