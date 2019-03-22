@@ -14,5 +14,7 @@ public interface MovieMapper extends MyMapper<Movie> {
 
     List<Movie> newestMovieList();
 
+    List<Movie> hotMovieList();
+
     Movie getMovieInfo(@Param("id")Integer id);
 }

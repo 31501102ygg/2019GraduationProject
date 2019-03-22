@@ -338,6 +338,7 @@ public class Movie {
 
     public void transformDateToString(){
         this.createTimeString = DateUtil.convertToDateString(this.createTime);
+        if (this.releaseTime!=null)
         this.releaseTimeString = DateUtil.convertToDateString(this.releaseTime);
     }
     public Movie(){}

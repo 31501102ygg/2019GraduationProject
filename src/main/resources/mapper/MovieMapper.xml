@@ -59,4 +59,9 @@
     where id = #{id}
   </select>
 
+  <select id="hotMovieList" resultMap="BaseResultMap">
+    select * from movie
+    order by create_time desc
+  </select>
+
 </mapper>

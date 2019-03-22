@@ -18,6 +18,8 @@ public interface MovieService {
 
     List<Movie> searchNewestMovie();
 
+    List<Movie> searchHotMovie();
+
     Movie getMovieInfo(Integer movieId);
 
     void checkUserOperation(Integer movieId,Integer userId,MovieDto movieDto);

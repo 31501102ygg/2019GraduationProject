@@ -2,7 +2,6 @@ package com.edu.zucc.ygg.movie.controller;
 
 import com.edu.zucc.ygg.movie.constant.ApplicationConstant;
 import com.edu.zucc.ygg.movie.domain.UpgradePro;
-import com.edu.zucc.ygg.movie.dto.LongCommentaryDto;
 import com.edu.zucc.ygg.movie.dto.ResultDto;
 import com.edu.zucc.ygg.movie.dto.UpgradeProDto;
 import com.edu.zucc.ygg.movie.dto.UpgradeSearchDto;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,9 +95,10 @@ public class UpgradeProController {
         PageHelper.startPage(pageNum, pageSize);
         PageInfo<UpgradePro> pageInfo = new PageInfo<>(upgradeProService.search(searchDto));
         List<UpgradePro> lists = pageInfo.getList();
-        lists.forEach(list ->{list.transformDateToString();});
+        List<UpgradeProDto> results = new ArrayList<>();
+        lists.forEach(upgradePro -> {results.add(new UpgradeProDto(upgradePro));});
         Map<String,Object> map = new HashMap<>();
-        map.put("list",lists);
+        map.put("list",results);
         map.put("total",pageInfo.getTotal());
         return ResultDtoFactory.toAck("查询成功",map);
     }

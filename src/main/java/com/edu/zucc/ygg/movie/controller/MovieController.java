@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,9 +28,7 @@ import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 
@@ -43,6 +42,8 @@ public class MovieController {
     MovieService movieService;
     @Autowired
     UserService userService;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     @ApiOperation(value = "添加电影")
@@ -121,6 +122,26 @@ public class MovieController {
         return ResultDtoFactory.toAck("查询成功",map);
     }
 
+    @RequestMapping(value = "/hot",method = RequestMethod.POST)
+    @ApiOperation(value = "最热电影获取")
+    public ResultDto getHotMovie(@RequestBody MovieDto movieDto){
+        int pageNum = movieDto.getPageNum()==null?1:movieDto.getPageNum();
+        int pageSize = movieDto.getPageSize()==null?10:movieDto.getPageSize();
+        int start = (pageNum-1)*pageSize;
+        int end = pageNum*pageSize-1;
+        String dir = "movie:watch";
+        Set<Integer> results =  redisTemplate.opsForZSet().reverseRange(dir,start,end);
+        List<Movie> movies = new ArrayList<>();
+        for (Integer id:results){
+            Movie movie = movieService.getMovieInfo(id);
+            movie.transformDateToString();
+            movies.add(movie);
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("pageNumber",movies.size());
+        map.put("list",movies);
+        return ResultDtoFactory.toAck("查询成功",map);
+    }
 
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     @ApiOperation(value = "获取某部电影详细信息")

@@ -105,7 +105,7 @@ public class LongCommentaryController {
 
     @RequestMapping(value = "get/collection",method = RequestMethod.GET)
     @ApiOperation(value = "获取收藏影评列表")
-    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
+//    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
     public ResultDto getCollectionCommentaryList(HttpServletRequest request,@RequestParam int page){
         String token = request.getHeader("Authorization");
         if (StringUtil.isEmpty(token)){

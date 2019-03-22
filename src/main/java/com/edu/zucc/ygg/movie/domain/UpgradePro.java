@@ -35,10 +35,6 @@ public class UpgradePro {
     @Column(name = "auditingTime")
     private Date auditingtime;
 
-    private String createtimeString;
-
-    private String auditingtimeString;
-
     /**
      * @return id
      */
@@ -157,25 +153,4 @@ public class UpgradePro {
         this.auditingtime = auditingtime;
     }
 
-    public String getCreatetimeString() {
-        return createtimeString;
-    }
-
-    public void setCreatetimeString(String createtimeString) {
-        this.createtimeString = createtimeString;
-    }
-
-    public String getAuditingtimeString() {
-        return auditingtimeString;
-    }
-
-    public void setAuditingtimeString(String auditingtimeString) {
-        this.auditingtimeString = auditingtimeString;
-    }
-
-    public void transformDateToString(){
-        this.createtimeString = DateUtil.convertToDateString(this.createtime);
-        if (auditingtime!=null)
-            this.auditingtimeString = DateUtil.convertToDateString(this.auditingtime);
-    }
 }

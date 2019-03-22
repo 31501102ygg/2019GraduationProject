@@ -74,6 +74,12 @@ public class MovieServiceImpl extends BaseService<Movie> implements MovieService
     }
 
     @Override
+    public List<Movie> searchHotMovie() {
+        List<Movie> movies = movieMapper.hotMovieList();
+        return movies;
+    }
+
+    @Override
     public Movie getMovieInfo(Integer movieId) {
         return movieMapper.getMovieInfo(movieId);
     }
@@ -82,9 +88,13 @@ public class MovieServiceImpl extends BaseService<Movie> implements MovieService
     public void checkUserOperation(Integer movieId, Integer userId,MovieDto movieDto) {
         if (longCommentaryMapper.checkExist(movieId,userId)>0){
             movieDto.setLongCommentary(true);
+        }else{
+            movieDto.setLongCommentary(false);
         }
         if (shortCommentaryMapper.checkExist(movieId,userId)>0){
             movieDto.setShortCommentary(true);
+        }else{
+            movieDto.setShortCommentary(false);
         }
     }
 }
