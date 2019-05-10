@@ -5,6 +5,7 @@ import com.edu.zucc.ygg.movie.dto.LongCommentaryDto;
 import com.edu.zucc.ygg.movie.dto.LongCommentarySearchDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface LongCommentaryService {
     public LongCommentary add(LongCommentary longCommentary);
@@ -30,4 +31,6 @@ public interface LongCommentaryService {
     public boolean delete(int id);
 
     public long likeNumber(int id);
+
+    public List<Map<String,Object>> getAvgScore();
 }

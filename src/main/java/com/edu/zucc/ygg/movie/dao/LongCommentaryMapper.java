@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface LongCommentaryMapper extends MyMapper<LongCommentary> {
@@ -27,4 +28,6 @@ public interface LongCommentaryMapper extends MyMapper<LongCommentary> {
 
     @Select("select count(0) from long_commentary where movie_id = #{movieId} and user_id = #{userId}")
     public int checkExist(@Param("movieId")int movieId,@Param("userId")int userId);
+
+    public List<Map<String,Object>> getAvgScore();
 }

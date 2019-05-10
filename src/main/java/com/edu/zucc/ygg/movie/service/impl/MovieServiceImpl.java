@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MovieServiceImpl extends BaseService<Movie> implements MovieService {
@@ -96,5 +97,25 @@ public class MovieServiceImpl extends BaseService<Movie> implements MovieService
         }else{
             movieDto.setShortCommentary(false);
         }
+    }
+
+    @Override
+    public void moviePageReadNumUpdate(int movieId, int count) {
+        movieMapper.updateReadNumber(movieId,count);
+    }
+
+    @Override
+    public List<Map<String, Integer>> getMovieReadNum() {
+        return movieMapper.getMovieRead();
+    }
+
+    @Override
+    public void updateMovieScore(int id, double score) {
+        movieMapper.updateScore(id,score);
+    }
+
+    @Override
+    public void delete(int id) {
+        movieMapper.deleteByPrimaryKey(id);
     }
 }

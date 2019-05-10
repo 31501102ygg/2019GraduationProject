@@ -24,12 +24,31 @@ public class MovieDto {
     private String introduction;
     private String language;
     private String keyword;
+    private double score;
 
     private boolean shortCommentary;    //某个用户是否已经对这个电影有短评
     private boolean longCommentary;     //某个用户是否已经对这个电影有长评
 
     private Integer pageSize;
     private Integer pageNum;
+
+    private int orderBy;
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public int getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(int orderBy) {
+        this.orderBy = orderBy;
+    }
 
     public String getKeyword() {
         return keyword;
@@ -211,6 +230,7 @@ public class MovieDto {
         this.actors = movie.getActors();
         this.introduction = movie.getIntroduction();
         this.language = movie.getLanguage();
+        this.score = movie.getScore();
         this.longCommentary = true;
         this.shortCommentary = true;
     }

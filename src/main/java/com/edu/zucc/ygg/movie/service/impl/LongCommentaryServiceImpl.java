@@ -16,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -115,5 +116,10 @@ public class LongCommentaryServiceImpl extends BaseService<LongCommentary> imple
     public long likeNumber(int id) {
         String dir = "like:";
         return redisTemplate.opsForSet().size(dir+id);
+    }
+
+    @Override
+    public List<Map<String, Object>> getAvgScore() {
+        return longCommentaryMapper.getAvgScore();
     }
 }

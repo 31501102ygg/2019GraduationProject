@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edu.zucc.ygg.movie.dao.LongCommentaryMapper">
-  <resultMap id="BaseResultMap" type="com.edu.zucc.ygg.movie.domain.LongCommentary">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="movie_id" jdbcType="INTEGER" property="movieId" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="filter_content" jdbcType="VARCHAR" property="filterContent" />
-    <result column="pure_text" jdbcType="VARCHAR" property="pureText" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="like" jdbcType="INTEGER" property="like" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.edu.zucc.ygg.movie.domain.LongCommentary">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="movie_id" jdbcType="INTEGER" property="movieId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="filter_content" jdbcType="VARCHAR" property="filterContent"/>
+        <result column="pure_text" jdbcType="VARCHAR" property="pureText"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="like" jdbcType="INTEGER" property="like"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
     <select id="getLongCommentaryList" resultType="com.edu.zucc.ygg.movie.dto.LongCommentaryDto">
       select lc.id as id,lc.content as content,us.user_name as userName,lc.title as title,
               mv.img_url as movieUrl,lc.filter_content as filterContent,lc.pure_text as pureContent,
@@ -50,11 +50,12 @@
         inner join user_info ui on lc.user_id = ui.user_id
         where lc.id = #{id} and lc.state = 0
     </select>
-    <select id="search" resultType="com.edu.zucc.ygg.movie.dto.LongCommentaryDto" parameterType="com.edu.zucc.ygg.movie.dto.LongCommentarySearchDto">
+    <select id="search" resultType="com.edu.zucc.ygg.movie.dto.LongCommentaryDto"
+            parameterType="com.edu.zucc.ygg.movie.dto.LongCommentarySearchDto">
         select lc.id as id,lc.content as content,us.user_name as userName,lc.title as title,
-              mv.img_url as movieUrl,lc.filter_content as filterContent,lc.pure_text as pureContent,
-              ui.header_url as userUrl,lc.score as score,lc.create_time as time
-      from long_commentary lc
+        mv.img_url as movieUrl,lc.filter_content as filterContent,lc.pure_text as pureContent,
+        ui.header_url as userUrl,lc.score as score,lc.create_time as time
+        from long_commentary lc
         inner join movie mv on lc.movie_id = mv.id
         inner join users us on lc.user_id = us.id
         inner join user_info ui on lc.user_id = ui.user_id
@@ -67,18 +68,27 @@
             and us.user_name like concat(concat('%',#{userName}),'%')
         </if>
 
-        <if test="commentaryName !=null and commentaryName !=''" >
+        <if test="commentaryName !=null and commentaryName !=''">
             and lc.title like concat(concat('%',#{commentaryName}),'%')
         </if>
 
-        <if test="keyword !=null and keyword !=''" >
+        <if test="keyword !=null and keyword !=''">
             and lc.id in (
             select lc.id
             from long_commentary lc
             inner join movie mv on lc.movie_id = mv.id
             where lc.title like concat(concat('%',#{keyword}),'%')
-            or  mv.name like concat(concat('%',#{keyword}),'%')
+            or mv.name like concat(concat('%',#{keyword}),'%')
             )
         </if>
+    </select>
+    <select id="getAvgScore" resultType="java.util.Map">
+        select avg(table1.score) as score, table1.movieId as id
+        from (select score as score, movieId as movieId
+              from short_commentary
+              union
+              select score as score, movie_id as movieId
+              from long_commentary) as table1
+        group by table1.movieId;
     </select>
 </mapper>

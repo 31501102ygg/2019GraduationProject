@@ -18,10 +18,30 @@
     <result column="actors" jdbcType="VARCHAR" property="actors" />
     <result column="language" jdbcType="VARCHAR" property="language" />
     <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="score" jdbcType="DOUBLE" property="score" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
-  <select id="newestMovieList" resultMap="BaseResultMap">
+  <update id="updateReadNumber">
+    <selectKey keyProperty="count" resultType="int" order="BEFORE">
+      select count(0) from movie_read where movie_id = #{id}
+    </selectKey>
+    <if test="count > 0">
+      update movie_read
+      set count = #{count1}
+      where movie_id = #{id}
+    </if>
+    <if test="count==0">
+      insert into movie_read (movie_id,count) values( #{id},#{count1})
+    </if>
+  </update>
+
+    <update id="updateScore">
+      update movie set score = #{score} where id = #{id}
+    </update>
+
+    <select id="newestMovieList" resultMap="BaseResultMap">
     select * from movie
     order by create_time desc
   </select>
@@ -51,7 +71,12 @@
       or director like CONCAT('%',#{keyword},'%')
       )
     </if>
-    order by create_time Desc
+    <if test="orderBy == 0">
+      order by create_time Desc
+    </if>
+    <if test="orderBy == 1">
+      order by score Desc
+    </if>
   </select>
 
   <select id="getMovieInfo" resultMap="BaseResultMap">
@@ -63,5 +88,10 @@
     select * from movie
     order by create_time desc
   </select>
+
+    <select id="getMovieRead" resultType="java.util.Map">
+      select movie_id,count
+      from movie_read
+    </select>
 
 </mapper>

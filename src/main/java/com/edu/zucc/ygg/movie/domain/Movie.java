@@ -78,12 +78,22 @@ public class Movie {
 
     private String introduction;
 
+    private double score;
+
     private String createTimeString;
 
     private String releaseTimeString;
 
     public String getReleaseTimeString() {
         return releaseTimeString;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 
     public void setReleaseTimeString(String releaseTimeString) {

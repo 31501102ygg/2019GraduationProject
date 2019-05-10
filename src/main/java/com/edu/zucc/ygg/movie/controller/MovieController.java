@@ -176,4 +176,10 @@ public class MovieController {
         return ResultDtoFactory.toAck("电影简要信息查询成功",movieSimpleInfoDto);
     }
 
+    @RequestMapping(value = "delete",method = RequestMethod.GET)
+    @ApiOperation(value = "删除一部电影")
+    public ResultDto deleteMovie(@RequestParam int id){
+        movieService.delete(id);
+        return ResultDtoFactory.toAck("电影删除成功");
+    }
 }

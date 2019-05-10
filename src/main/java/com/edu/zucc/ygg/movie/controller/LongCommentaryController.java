@@ -119,6 +119,11 @@ public class LongCommentaryController {
             PageHelper.startPage(pageNum, pageSize);
             PageInfo<LongCommentaryDto> pageInfo = new PageInfo<LongCommentaryDto>(longCommentaryService.getCollection(userId));
             List<LongCommentaryDto> longCommentaryDtos = pageInfo.getList();
+            for (LongCommentaryDto commentaryDto : longCommentaryDtos) {
+                commentaryDto.setLike(longCommentaryService.searchLike(userId, String.valueOf(commentaryDto.getId())));
+                commentaryDto.setCollection(longCommentaryService.searchCollections(userId, commentaryDto.getId()));
+                commentaryDto.setLikeNumber(longCommentaryService.likeNumber(commentaryDto.getId()));
+            }
             Map map = new HashMap();
             map.put("total",pageInfo.getTotal());
             map.put("list",longCommentaryDtos);

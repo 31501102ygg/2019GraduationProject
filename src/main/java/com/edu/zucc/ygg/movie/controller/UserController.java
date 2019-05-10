@@ -61,6 +61,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/admin/delete",method = RequestMethod.GET)
+    @ApiImplicitParams({@ApiImplicitParam(name = ApplicationConstant.AUTHORIZATION, required = true, paramType = ApplicationConstant.HTTP_HEADER)})
     @RequiresRoles("admin")
     @RequiresPermissions("root")
     public ResultDto deleteAdmin(@RequestParam int adminId){
