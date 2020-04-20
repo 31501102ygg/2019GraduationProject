@@ -11,8 +11,8 @@ public class OSSImgAccessUtil {
     private OSSClient ossClient;
     String bucketName = "ygg-31501102-bucket";
     // accessKey
-    private String accessKeyId = "LTAItiUlwVCLXbi9";
-    private String accessKeySecret = "EkYdAZjYzBewNF5V5lXVcn1s0fnpsh";
+    private String accessKeyId = "accessKeyId";
+    private String accessKeySecret = "accessKeySecret";
 
     // 创建OSSClient实例。
     public void initOSSClient(){
